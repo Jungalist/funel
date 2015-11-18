@@ -1,3 +1,3 @@
 echo "Waiting 5s"
 sleep 5s
-echo "waited5s" > upload/scripts/$1
+echo "waited5s"

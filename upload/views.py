@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from .forms import UploadFileForm
 from .models import Upload
 import subprocess
@@ -14,12 +15,16 @@ def upload_view(request):
             instance = Upload(file=request.FILES['file'])
 	    instance.save()
 	    path = instance.file.path
-            subprocess.call(['/home/seb/project/djangoservice/upload/scripts/wait.sh',(getName(path)+'_test')], shell=True)
+            subprocess.call(['/home/seb/project/djangoservice/upload/scripts/wait.sh'], shell=True)
 	    refresh()#add time variable that can be set in admin
-            return HttpRedirect('upload/submitted.html') # IMPLEMENT
+            return HttpResponseRedirect('success/') # IMPLEMENT
     else:
         form = UploadFileForm()
+    
     return render(request, 'upload/upload_view.html', {'form': form})
+
+def success(request):
+    return render(request, 'upload/submitted.html',{})
 
 def refresh():
      subprocess.check_output(["/home/seb/project/djangoservice/upload/scripts/wait.sh", "scripts/hello.txt"], shell=True)
