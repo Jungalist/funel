@@ -8,6 +8,7 @@ import subprocess
 def upload_view(request):  
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
+<<<<<<< HEAD
         #TODO check all fields that need to be saved are
 	#add an in.progress var
 	#use PK ids to refer to uplaods
@@ -16,6 +17,17 @@ def upload_view(request):
 	    #path = instance.file.path
             subprocess.call(['/home/seb/project/djangoservice/upload/scripts/wait.sh'], shell=True)
 	    refresh() #TODO add time variable that can be set in admin
+=======
+        #set all the other fields to save form to an upload object in db
+	#add an in.progress var
+	#use PK ids to refer to uplaods
+        if form.is_valid():
+            instance = Upload(file=request.FILES['file'])
+	    instance.save()
+	    path = instance.file.path
+            subprocess.call(['/home/seb/project/djangoservice/upload/scripts/wait.sh'], shell=True)
+	    refresh()#add time variable that can be set in admin
+>>>>>>> aceb2a88bdf537939ac483aec46550bdaa9bd2dc
             return HttpResponseRedirect('success/') # IMPLEMENT
     else:
         form = UploadFileForm()
@@ -28,11 +40,14 @@ def success(request):
 def refresh():
      subprocess.check_output(["/home/seb/project/djangoservice/upload/scripts/wait.sh", "scripts/hello.txt"], shell=True)
 
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> aceb2a88bdf537939ac483aec46550bdaa9bd2dc
 def getName(path):
     s = ""
     for c in reversed(path):
