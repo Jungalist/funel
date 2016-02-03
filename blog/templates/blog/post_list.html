@@ -1,0 +1,23 @@
+{% load staticfiles %}
+<!html>
+<head>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="css/blog.css">
+  <title>Hello World</title>
+</head>
+<body>
+<div>
+{% for post in posts %}
+    <div>
+        <p>published: {{ post.published_date }}</p>
+        <h1><a href="">{{ post.title }}</a></h1>
+        <p>{{ post.text|linebreaks }}</p>
+    </div>
+{% endfor %}
+<div class="robin"><h2>hi there bumcheeks dis is boring </h2></div>
+<h2>hi there mr bumcheeks</h2>
+
+</div>
+</body>
+</html>
