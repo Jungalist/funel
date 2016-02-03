@@ -1,21 +1,16 @@
-<!html>
-<head>
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-</head>
-<h1>Upload view</h1>
-<body>
-<div class="container">
+{% extends 'upload/base.html' %}
+
+
+
+{% block content %} 
+<h1 class="header">Upload</h1>        
   <div class="row">
-    <div class="col-sm-2"></div>
-    <div class="col-sm-8">
-	<form method="post" action="../upload/" enctype="multipart/form-data">{% csrf_token %}
-		{{ form }}
-		<input type="submit">
+    <div class="col-sm-8 col-sm-offset-2 panel panel-default">
+	<form class="upload" method="post" action="../upload/" enctype="multipart/form-data">{% csrf_token %}
+		{{ form.as_p }}
+		<button type="submit">Submit</button>
 	</form>
     </div>
     <div class="col-sm-2"></div>
   </div>
-</div>
-</body>
-</html>
+{% endblock %}
