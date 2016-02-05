@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'blog',
     'upload',
+    'django_extensions'
 )
 
 #Where files will be uploaded, project/media
