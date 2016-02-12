@@ -38,6 +38,9 @@ class Queue(models.Model):
 	self.save()
 	return
 
+    def empty(self):
+        return self.jobs_list.empty()
+
     #start the job, pop from queue, wait til it finishes 
     def get(self):
 	current = self.jobs_list.get()

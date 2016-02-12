@@ -39,8 +39,13 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'blog',
     'upload',
-    'django_extensions'
+    'djcelery',
+    'kombu.transport.django',
 )
+
+#import djcelery
+#djcelery.setup_loader()
+#BROKER_URL = "django://"
 
 #Where files will be uploaded, project/media
 MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
