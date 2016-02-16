@@ -1,5 +1,5 @@
 {% extends 'upload/base.html' %}
-
+{% load widget_tweaks %}
 
 
 {% block content %} 
@@ -7,7 +7,10 @@
   <div class="row">
     <div class="col-sm-8 col-sm-offset-2 panel panel-default">
 	<form class="upload" method="post" action="../upload/" enctype="multipart/form-data">{% csrf_token %}
-		{{ form.as_p }}
+		<label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+	        {{ form.title }}
+		<span style="margin:0 auto;"><label for="{{ form.file.id_for_label }}">{{ form.file.label }}</label>
+		{{ form.file }}</span>
 		<button type="submit">Submit</button>
 	</form>
     </div>

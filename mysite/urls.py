@@ -14,11 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import include, url
-from django.contrib import admin
+from django.contrib import admin 
+from upload.views import *
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-#redirects domain 127.0.0.1:8000 to blog page
-    url(r'', include('blog.urls')),
     url(r'', include('upload.urls')),
+    
+
 ]

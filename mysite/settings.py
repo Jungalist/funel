@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 """
 Django settings for mysite project.
 
@@ -14,6 +16,9 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+BROKER_URL = 'amqp://seb:password@localhost/vhost'
 
 
 # Quick-start development settings - unsuitable for production
@@ -37,14 +42,14 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog',
     'upload',
-    'djcelery',
+    'widget_tweaks',
     'kombu.transport.django',
 )
 
 #import djcelery
 #djcelery.setup_loader()
+#CELERY_IMPORTS = (tasks.runserver)
 #BROKER_URL = "django://"
 
 #Where files will be uploaded, project/media
