@@ -2,10 +2,11 @@ from django.db import models
 from django.utils import timezone
 import threading
 import subprocess
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from django.conf import settings
 
 class Upload(models.Model):
-    author = models.OneToOneField(User, default=None)#, default=str('herro'))#on_delete=models.CASCADE) #TODO change
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)#, default=str('herro'))#on_delete=models.CASCADE) #TODO change
     title = models.CharField(max_length=20)
     status = models.BooleanField(default=False)
     submit_date = models.DateTimeField(

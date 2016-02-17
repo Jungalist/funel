@@ -34,9 +34,31 @@ def index(request):
     user = request.user
     return render(request, 'upload/index.html', {'user': user})
 
+
+#def login(request):
+#    
+
+#def logout(request):
+#    return
+
 def getName(path):
     s = ""
     for c in reversed(path):
         while c != '/':
             s = s + c
-    return reversed(s)    
+    return reversed(s)
+
+    
+def login(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+            return render(request, 'upload/index.html', {'msg': 'Welcome back'})
+        else:
+            return render(request, 'upload/index.html', {'msg': 'Account disabled'})
+    else:
+        return render(request, 'upload/login.html', {'msg': 'Try logging in again'})
+

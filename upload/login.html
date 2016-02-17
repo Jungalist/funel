@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ msg }}
+  <form class="login" method="post" action="">{% csrf_token %}
+    {% if request.user.is_authenticated %}
+      <h1>You are already logged in</h1>
+    {% else %}            
+       <input type="text" class="form-control" name="username" placeholder="Username" />
+       <input type="password" class="form-control" name="password" placeholder="Password" />         
+       <button type="submit">Submit</button>
+    {% endif %}
+  </form>
+
+
+{% endblock %}
