@@ -3,14 +3,10 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from .forms import UploadFileForm
 from .models import Upload
-from upload.tasks import runscript
+from django.contrib import auth
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-import subprocess
-
-
 #import pdb; pdb.set_trace() -debug
-
-
 
 def upload_view(request):  
     if request.method == 'POST':
@@ -35,12 +31,7 @@ def index(request):
     return render(request, 'upload/index.html', {'user': user})
 
 
-#def login(request):
-#    
-
-#def logout(request):
-#    return
-
+#TODO MOVE
 def getName(path):
     s = ""
     for c in reversed(path):
@@ -50,15 +41,18 @@ def getName(path):
 
     
 def login(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        if user.is_active:
-            login(request, user)
-            return render(request, 'upload/index.html', {'msg': 'Welcome back'})
+#	TODO and is valid
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return render(request, 'upload/index.html', {'msg': 'Welcome back'})
+            else:
+                return render(request, 'upload/index.html', {'msg': 'Account disabled'})
         else:
-            return render(request, 'upload/index.html', {'msg': 'Account disabled'})
+            return render(request, 'registration/login.html', {'msg': 'Try logging in again'})
     else:
-        return render(request, 'upload/login.html', {'msg': 'Try logging in again'})
-
+        return render(request, 'registration/login.html', {})

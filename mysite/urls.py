@@ -21,5 +21,4 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'', include('upload.urls')),
     url('^', include('django.contrib.auth.urls'))
-   # url('^login/', upload.views.login)
 ]
