@@ -6,7 +6,7 @@ import subprocess
 from django.conf import settings
 
 class Upload(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)#, default=str('herro'))#on_delete=models.CASCADE) #TODO change
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
     title = models.CharField(max_length=20)
     status = models.BooleanField(default=False)
     submit_date = models.DateTimeField(

@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from .forms import UploadFileForm
 from .models import Upload
 from django.contrib import auth
+from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 #import pdb; pdb.set_trace() -debug
@@ -43,12 +44,12 @@ def getName(path):
 def login(request):
 #	TODO and is valid
     if request.method == 'POST':
-        username = request.POST.get('username')
+	username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
-                login(request, user)
+                auth_login(request, user)
                 return render(request, 'upload/index.html', {'msg': 'Welcome back'})
             else:
                 return render(request, 'upload/index.html', {'msg': 'Account disabled'})
