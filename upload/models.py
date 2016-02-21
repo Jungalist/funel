@@ -2,8 +2,8 @@ from django.db import models
 from django.utils import timezone
 import threading
 import subprocess
-#from django.contrib.auth.models import User
 from django.conf import settings
+import tempfile
 
 class Upload(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
@@ -14,8 +14,8 @@ class Upload(models.Model):
     start_date = models.DateTimeField(
             blank=True, null=True)
     finish_date = models.DateTimeField(
-            blank=True, null=True)
-    file = models.FileField(upload_to='uploads', null=True)
+            blank=True, null=True)#TODO change to unique name
+    file = models.FileField(upload_to='experiments', null=True)
 
     def start_job(self):
         self.start_date = timezone.now()
@@ -30,4 +30,3 @@ class Upload(models.Model):
 
     def __str__(self):
         return self.title
-

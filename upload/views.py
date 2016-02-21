@@ -1,12 +1,13 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
 from .forms import UploadFileForm
 from .models import Upload
 from django.contrib import auth
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from upload.tasks import runscript
+import os
+from django.conf import settings
 #import pdb; pdb.set_trace() -debug
 
 def upload_view(request):  
@@ -16,11 +17,10 @@ def upload_view(request):
 	#add an in.progress var
 	#use PK ids to refer to uplaods
         if form.is_valid():
-	    title = form.instance.title	    
-	    runscript.delay(title)
-	    form.save()
-	    #refresh() #TODO add concurrency number variable for admin
-	    return render(request, 'upload/submitted.html', {'title': title})
+	    upload = form.save()
+	    path = change_name(upload)
+	    runscript.delay(upload.pk, path)
+	    return render(request, 'upload/submitted.html', {'title': upload.file.path})
     else:
         form = UploadFileForm()
     
@@ -28,21 +28,20 @@ def upload_view(request):
 
 
 def index(request):
-    user = request.user
-    return render(request, 'upload/index.html', {'user': user})
+    return render(request, 'upload/index.html', {'user': request.user})
 
-
-#TODO MOVE
-def getName(path):
-    s = ""
-    for c in reversed(path):
-        while c != '/':
-            s = s + c
-    return reversed(s)
-
+#TODO file extension 
+#TODO split into files/classes
+def change_name(u):
+    old = u.file.path
+    new = settings.MEDIA_ROOT + '/' + 'experiments' + '/' + str(u.author.id) + '_' + str(u.id) + '.arff'
+    os.rename(old, new)
+    setattr(u, 'file', new)
+    u.save()
+    return new
     
 def login(request):
-#	TODO and is valid
+#TODO and is valid
     if request.method == 'POST':
 	username = request.POST.get('username')
         password = request.POST.get('password')
