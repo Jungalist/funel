@@ -11,3 +11,4 @@ do
 done
 
 echo Finished!
+python finished.py

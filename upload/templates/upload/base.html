@@ -29,9 +29,6 @@
       {% if request.user.is_authenticated %}
         <div class="col-sm-2 login">
           <a href="/logout"><button type="button" class="btn btn-primary">Log out <span class="glyphicon glyphicon-log-out"></span></button></a>
-          {% if request.user.is_superuser %}
-	    <b>ADMIN</b>
-	  {% endif %}
         </div>
       {% else %}
         <div class="col-sm-2 login">
@@ -49,6 +46,9 @@
             <li><a href="/">Home</a></li>
             <li><a href="/upload">Upload</a></li>
             <li><a href="/">Test</a></li>
+	    {% if request.user.is_superuser %}
+                <li><a href="/admin"><b>ADMIN</b></a><li>
+            {% endif %}
           </ul>
         </div>
       </div>        

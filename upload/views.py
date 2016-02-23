@@ -20,7 +20,7 @@ def upload_view(request):
 	    upload = form.save()
 	    path = change_name(upload)
 	    runscript.delay(upload.pk, path)
-	    return render(request, 'upload/submitted.html', {'title': upload.file.path})
+	    return render(request, 'upload/submitted.html', {'title': upload.title, 'link': 'job/' + str(upload.id)})
     else:
         form = UploadFileForm()
     
@@ -56,3 +56,18 @@ def login(request):
             return render(request, 'registration/login.html', {'msg': 'Try logging in again'})
     else:
         return render(request, 'registration/login.html', {})
+
+def progress(request, id):
+    #TODO only show users their own jobs/do all the view handling logic here not in html
+    #TODO check if job isnt already finished
+    job = Upload.objects.get(id=id)
+    #If the job has been started, change message to 'in progress'
+    if (job.start_date is not None):
+        if (job.status):
+	    progress = 'Done!'
+	else:
+	    progress = 'We are working on you experiment, check back later'
+    else:
+	progress = 'Your job is in teh queue, please check back later'
+
+    return render(request, 'upload/progress.html', {'progress': progress})

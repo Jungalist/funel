@@ -1,0 +1,11 @@
+{% extends 'upload/base.html' %}
+
+{% block content %}
+
+	{% if request.user.is_authenticated %}
+		<p>{{ progress }}</p> 
+	{% else %}
+		<p>Please log in</p>
+	{% endif %}
+
+{% endblock %}

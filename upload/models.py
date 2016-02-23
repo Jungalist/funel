@@ -3,7 +3,6 @@ from django.utils import timezone
 import threading
 import subprocess
 from django.conf import settings
-import tempfile
 
 class Upload(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
@@ -26,6 +25,7 @@ class Upload(models.Model):
 
     def job_done(self):
 	self.finish_date = timezone.now()
+        self.status = True
 	self.save()
 
     def __str__(self):
