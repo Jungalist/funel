@@ -8,7 +8,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url('^login/', views.login, name='login'),
 #Only works for real IDs that are 1-4 digit long
-    url(r'^job/(?P<id>\d{1,4})/$', views.progress, name='progress')
+    url(r'^upload/job/(?P<id>\d{1,4})/$', views.progress, name='progress')
 
    # url(r'^login/$', django.contrib.auth.views.login, name='login'),
    # url(r'^logout/$', django.contrib.auth.views.logout, name='logout')

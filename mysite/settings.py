@@ -33,6 +33,7 @@ INSTALLED_APPS = (
     'upload',
     'widget_tweaks',
     'kombu.transport.django',
+    'd3'
 )
 
 

@@ -19,7 +19,7 @@ def upload_view(request):
         if form.is_valid():
 	    upload = form.save()
 	    path = change_name(upload)
-	    runscript.delay(upload.pk, path)
+	    runscript.delay(upload.pk, (str(upload.author.id) + '_' + str(upload.id)), path)
 	    return render(request, 'upload/submitted.html', {'title': upload.title, 'link': 'job/' + str(upload.id)})
     else:
         form = UploadFileForm()
@@ -68,6 +68,10 @@ def progress(request, id):
 	else:
 	    progress = 'We are working on you experiment, check back later'
     else:
-	progress = 'Your job is in teh queue, please check back later'
+	progress = 'Your job is in the queue, please check back later'
 
     return render(request, 'upload/progress.html', {'progress': progress})
+
+def show_jobs(request):
+    jobs = Upload.objects.filter(author=request.user)
+    return render(request, 'upload/jobs.html', {'jobs' : jobs})

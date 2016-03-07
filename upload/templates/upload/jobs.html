@@ -1,0 +1,32 @@
+{% extends 'upload/base.html' %}
+{% block content %}
+
+<div class="col-sm-2">
+</div>
+
+<div class="col-sm-8">
+
+{% for job in jobs %}
+ID: {{ job.id }}
+Title: {{ job.title }}
+Status:
+{% if job.start_date != None %}
+  {% if job.status %}
+    Finished
+  {% else %}
+    In progress
+  {% endif %}
+
+{% else %}
+Submitted, in the queue
+{% endif %}
+<br />
+{% endfor %}
+
+</div>
+
+<div class="col-sm-8">
+</div>
+
+
+{% endblock %}

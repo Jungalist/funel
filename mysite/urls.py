@@ -20,5 +20,6 @@ from upload.views import *
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'', include('upload.urls')),
-    url('^', include('django.contrib.auth.urls'))
+    url('^', include('django.contrib.auth.urls')),
+    url(r'^user/jobs/', show_jobs)
 ]
