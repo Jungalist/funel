@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from .forms import UploadFileForm
 from .models import Upload
 from django.contrib import auth
@@ -64,7 +65,7 @@ def progress(request, id):
     #If the job has been started, change message to 'in progress'
     if (job.start_date is not None):
         if (job.status):
-	    progress = 'Done!'
+	    return redirect('result', id=id)
 	else:
 	    progress = 'We are working on you experiment, check back later'
     else:
@@ -74,4 +75,7 @@ def progress(request, id):
 
 def show_jobs(request):
     jobs = Upload.objects.filter(author=request.user)
-    return render(request, 'upload/jobs.html', {'jobs' : jobs})
+    return render(request, 'upload/jobs.html', {'jobs': jobs})
+
+def result(request, id):
+    return render(request, 'upload/result.html', {'id': id})

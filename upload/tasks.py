@@ -8,6 +8,17 @@ import time
 def runscript(current_id, name, path):
     u = Upload.objects.get(id=current_id)
     u.start_job()    
-    subprocess.check_call(["/home/seb/project/djangoservice/upload/scripts/submit.sh", name, path]) #add last 2 opts
+    try:
+	print 'try'
+	subprocess.check_call(["/home/seb/project/djangoservice/upload/scripts/submit.sh", name, path, str(current_id)]) #add last 2 opts
+    except:
+        print "An error has occured with job: " + current_id
+        u.job_error()
+	raise NameError('submit.sh error')
+#TODO error handling for dropped connection etc. test which ones would be raised
+
+    print 'job done id: ' + str(current_id)
+    result = '/home/seb/project/djangoservice/media/results/' + str(current_id) + '/co-prediction.txt' 
+    u.save_result(result)
     u.job_done()
-    print 'job done id: ' + str(current_id)    
+    print str(current_id) + ' result saved: ' + u.result.path
