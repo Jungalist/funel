@@ -18,7 +18,7 @@ def runscript(current_id, name, path):
 #TODO error handling for dropped connection etc. test which ones would be raised
 
     print 'job done id: ' + str(current_id)
-    result = '/home/seb/project/djangoservice/media/results/' + str(current_id) + '/co-prediction.txt' 
+    result = '/home/seb/project/djangoservice/media/results/' + str(u.author.id) + '_' + str(current_id) + '/co-prediction.txt' 
     u.save_result(result)
     u.job_done()
     print str(current_id) + ' result saved: ' + u.result.path

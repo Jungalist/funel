@@ -21,8 +21,7 @@ from d3.views import *
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'', include('upload.urls')),
-    url(r'^graph/', graph),
+    url(r'', include('d3.urls')),
     url('^', include('django.contrib.auth.urls')),
-    url(r'^user/jobs/', show_jobs),
-    url(r'^json/', json)
+    url(r'^user/jobs/', show_jobs)
 ]

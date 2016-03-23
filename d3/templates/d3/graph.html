@@ -59,9 +59,9 @@
     .attr("width", width)
     .attr("height", height);
 
-
+   
     //Load in the json file
-    d3.json("{% static 'co-prediction.json'%}", function(error, graph) {
+    d3.json({{ json }}}, function(error, graph) {
         
         if (error) throw error;
 
