@@ -7,7 +7,7 @@ import sys
 
 
 input = open("/home/seb/project/djangoservice/media/results/1_194/co-prediction.txt", 'r')
-output = open("/home/seb/project/djangoservice/media/results/1_194/co-prediction.json", 'w+')
+output = open("/home/seb/project/djangoservice/media/media/co-prediction.json", 'w+')
 
 output.write('{\n"nodes":[\n')
 
@@ -34,7 +34,7 @@ for i in range(0, len(raw)-1):
 output.write('],\n "links":[')
 
 for i in range(0, len(left)):
-    output.write('{"source: "' + str(unique.index(left[i])) + ', "target":' + str(unique.index(right[i])) + '},\n')
+    output.write('{"source":' + str(unique.index(left[i])) + ', "target":' + str(unique.index(right[i])) + '},\n')
 	    
     
 output.write("]}")
