@@ -9,11 +9,8 @@ class Graph(models.Model):
         default="0000",
         related_name='associd')
 
-    #file = models.OneToOneField(
-   # 	Upload, 
-    #	default='',
-     #   related_name='fiile')
-
-    json = models.FileField(null=True)
+    json_data = models.FileField(null=True)
 
     graph = models.TextField(null=True)
+
+    #Methods here to generate json and graph

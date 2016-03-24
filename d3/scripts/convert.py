@@ -37,6 +37,10 @@ def convert(inp, id):
             unique.append(raw[i])
         #If not the last line, add comma, if it is the last line, no comma
         #TODO make more efficient, perhaps regex instead of ifing every time
+        #while i<len(raw):
+            #normal line
+        #end line
+
         if i != len(raw)-2:
             output.write('{"name":' + '"' + str(raw[i]) + '"},\n')
         else:
@@ -54,5 +58,7 @@ def convert(inp, id):
     output.write("]}")
 
     output.close()
+
+
 
     
