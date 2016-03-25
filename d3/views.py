@@ -9,7 +9,6 @@ import simplejson as json
 def graph(request, id):
 	#TODO generate graph object in models
     g = Graph.objects.get(assoc_job_id=id)
-    convert(g.json_data.path, id) #if needed
     data = json.load(g.json_data)
     
     return render(request, 'd3/graph.html', {'json': data, 's': 's'})

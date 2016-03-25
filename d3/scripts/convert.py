@@ -10,7 +10,7 @@ def convert(inp, id):
     if not os.path.exists("/home/seb/project/djangoservice/media/graph/" + str(id)):
         os.mkdir("/home/seb/project/djangoservice/media/graph/" + str(id))
 
-    outpath = "/home/seb/project/djangoservice/media/graph/" + str(id) + '/' +"co-prediction.json"
+    outpath = "/home/seb/project/djangoservice/media/graph/" + str(id) + "/co-prediction.json"
     output = open(outpath, 'w+')
 
     output.write('{\n"nodes":[\n')
@@ -58,6 +58,7 @@ def convert(inp, id):
     output.write("]}")
 
     output.close()
+    return str(outpath)
 
 
 
