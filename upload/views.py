@@ -35,10 +35,12 @@ def index(request):
 #TODO split into files/classes
 def change_name(u):
     old = u.file.path
+    print "old: " + str(old)
     new = settings.MEDIA_ROOT + '/' + 'experiments' + '/' + str(u.author.id) + '_' + str(u.id) + '.arff'
     os.rename(old, new)
     setattr(u, 'file', new)
     u.save()
+    print "new: " + new
     return new
     
 def login(request):
@@ -78,4 +80,6 @@ def show_jobs(request):
     return render(request, 'upload/jobs.html', {'jobs': jobs})
 
 def result(request, id):
-    return render(request, 'upload/result.html', {'id': id})
+
+    #TODO dont hardcode getting the object and paths where possible
+    return render(request, 'upload/result.html', {'id': id, 'json': 'upload/job/' + id + '/json', 'graph': 'upload/job/' + id + '/graph'})
