@@ -1,5 +1,6 @@
 #A script to convert the raw data results from Funel to JSON ready for D3.js graph
 import sys, os
+#import pdb; pdb.set_trace()
 
 
 def convert(inp, id):

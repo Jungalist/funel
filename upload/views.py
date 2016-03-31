@@ -67,7 +67,7 @@ def progress(request, id):
     #If the job has been started, change message to 'in progress'
     if (job.start_date is not None):
         if (job.status):
-	    return redirect('result', id=id)
+	    return redirect('results', id=id)
 	else:
 	    progress = 'We are working on you experiment, check back later'
     else:
@@ -82,4 +82,4 @@ def show_jobs(request):
 def result(request, id):
 
     #TODO dont hardcode getting the object and paths where possible
-    return render(request, 'upload/result.html', {'id': id, 'json': 'upload/job/' + id + '/json', 'graph': 'upload/job/' + id + '/graph'})
+    return render(request, 'upload/result.html', {'id': id})
