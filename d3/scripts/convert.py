@@ -4,10 +4,12 @@ import sys, os
 
 
 def convert(inp, id):
+    graphpath = "/home/seb/project/funel/media/graph/"
+    
     #TODO from static
-    if not os.path.exists("/home/seb/project/djangoservice/media/graph/" + str(id)):
-        os.mkdir("/home/seb/project/djangoservice/media/graph/" + str(id))
-    debug = open("/home/seb/project/djangoservice/media/graph/" + str(id) + "/debug.txt", 'w+')
+    if not os.path.exists(graphpath + str(id)):
+        os.mkdir(graphpath + str(id))
+    debug = open(graphpath + str(id) + "/debug.txt", 'w+')
     #TODO change to 2d array
         
     raw = []
@@ -18,7 +20,7 @@ def convert(inp, id):
     try:
         #Read the input from argument
         input = open(inp, 'r')
-        outpath = "/home/seb/project/djangoservice/media/graph/" + str(id) + "/co-prediction.json"
+        outpath = graphpath + str(id) + "/co-prediction.json"
         output = open(outpath, 'w+')
         
 
@@ -65,7 +67,7 @@ def convert(inp, id):
 
         output.close()
         debug.close()
-        return str(outpath)
+        return outpath
 
 
     except ValueError:
