@@ -8,6 +8,33 @@ from d3.scripts.convert import convert
 from d3.models import Graph
 
 class Upload(models.Model):
+    SETTINGS = (
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+    )
+
+    PERMUTATIONS = (
+        ('10', '10'),
+        ('50', '50'),
+        ('100', '100'),
+        ('200', '200'),
+    )
+
+    BIOHEL = (
+        ('250', '250'),
+        ('500', '500'),
+        ('1000', '1000'),
+        ('2500', '2500'),
+    )
+
+    ATTRIBUTES = (
+        ('10', '10'),
+        ('50', '50'),
+        ('100', '100'),
+        ('200', '200'),
+    )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
     title = models.CharField(max_length=20)
@@ -22,6 +49,10 @@ class Upload(models.Model):
             blank=True, null=True)#TODO change to unique name
     file = models.FileField(upload_to='experiments', null=True)
     result = models.FileField(null=True)
+    setting = models.PositiveSmallIntegerField(default=1, choices=SETTINGS)
+    permutations = models.PositiveSmallIntegerField(default=100, choices=PERMUTATIONS)
+    biohel_runs = models.PositiveSmallIntegerField(default=1000, choices=BIOHEL)
+    attributes = models.PositiveSmallIntegerField(default=100, choices=ATTRIBUTES)
 
     def start_job(self):
         self.start_date = timezone.now()

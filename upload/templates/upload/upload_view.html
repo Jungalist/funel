@@ -11,9 +11,24 @@
 	        {{ form.title }}
 		<span style="margin:0 auto;"><label for="{{ form.file.id_for_label }}">{{ form.file.label }}</label>
 		{{ form.file }}</span>
+		<div style="margin:10px auto;">
+		<label for="{{ form.setting.id_for_label }}">{{ form.setting.label }}</label>
+	        {{ form.setting }}
+	     <label for="{{ form.permutations.id_for_label }}">{{ form.permutations.label }}</label>
+	        {{ form.permutations }}
+	     <label for="{{ form.biohel_runs.id_for_label }}">{{ form.biohel_runs.label }}</label>
+	        {{ form.biohel_runs }}
+	     <label for="{{ form.attributes.id_for_label }}">{{ form.attributes.label }}</label>
+	        {{ form.attributes }}
+	    </div>
+
+		<a href="http://82.35.221.203/upload/job/775883c9-ddaa-4951-be69-2ea0e94bed8b/results/">
+			<div class="btn btn-primary" id="demo" >
+		 		Click here for demo
+		 	</div>
+		</a>
+		 
 		
-		 <button type="submit" id="demo" action="">
-		 Click here for demo
 		<button type="submit">or submit</button>
 	</form>
     </div>
