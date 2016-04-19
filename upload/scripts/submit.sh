@@ -3,6 +3,11 @@
 # $2 = name of path to data file
 # $3 = id of job in database
 
+# $4 = setting 1-4
+# $5 = permutations
+# $6 = biohel runs
+# $7 = attributes kept
+
 #job name e.g. 1_001 instead of 1_001.arff
 name=$(basename $2 ".arff")
 rsa=/home/seb/.ssh/id_rsa
@@ -18,7 +23,7 @@ ssh -i $rsa $linux "scp /home/u13/b3037306/data/$name.arff $hpc:data/$name.arff"
 #TODO allow user to change the parameters
 ssh -t -t -i $rsa $linux ssh $hpc << HERE
  cd scripts/funel
- ./coprediction.sh $1 ~/data/$name.arff 1 100
+ ./coprediction.sh $1 ~/data/$name.arff $4 $5 $6 $7
  exit
 HERE
 
@@ -34,4 +39,3 @@ ssh -i $rsa $linux "scp $hpc:scripts/funel/results/$name/results/scores.dat /hom
 scp -i $rsa $linux:result/$name/co-prediction.txt $result/co-prediction.txt
 scp -i $rsa $linux:result/$name/statistical_test.dat $result/statistical_test.dat
 scp -i $rsa $linux:result/$name/scores.dat $result/scores.dat
-

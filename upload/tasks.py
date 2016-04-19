@@ -6,12 +6,12 @@ import time
 
 
 @shared_task
-def runscript(current_id, name, path):
+def runscript(current_id, name, path, setting, permutations, biohel_runs, attributes):
     u = Upload.objects.get(id=current_id)
     u.start_job()
     try:
         print 'try'
-        subprocess.check_call(["/home/seb/project/funel/upload/scripts/submit.sh", name, path, str(current_id)])
+        subprocess.check_call(["/home/seb/project/funel/upload/scripts/submit.sh", name, path, str(current_id), setting, permutations, biohel_runs, attributes])
     except:
         print "An error has occured with job: " + str(current_id)
         u.job_error()
@@ -23,6 +23,7 @@ def runscript(current_id, name, path):
     u.save_result(result)
     u.job_done()
     print str(current_id) + ' result saved: ' + u.result.path
+
 
 @shared_task
 def testtask():

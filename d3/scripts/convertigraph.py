@@ -20,13 +20,8 @@ def convert(inp, id):
     try:
         #Read the input from argument
         input = open(inp, 'r')
-        outpath = graphpath + str(id) + "/co-prediction.json"
+        outpath = graphpath + str(id) + "/igraph.txt"
         output = open(outpath, 'w+')
-        
-
-        output.write('{\n"nodes":[\n')
-
-        
 
 
         for line in input:
@@ -37,6 +32,7 @@ def convert(inp, id):
             right.append(word[1])
 
         input.close()
+        output.write('[')
         #get unique
         for i in range(0, len(raw)-1):
             #for j in range(i+1, len(raw)):
@@ -48,31 +44,19 @@ def convert(inp, id):
             #while i<len(raw):
                 #normal line
             #end line
-
-
-            # FOR ALL NODES
-            # if i != len(raw)-2:
-            #     output.write('{"name":' + '"' + str(raw[i]) + '"},\n')
-            # else:
-        	   # output.write('{"name":' + '"' + str(raw[i]) + '"}\n')
-        #FOR ONLY UNIQUE NODES IN THE GRAPH
         for i in range(0, len(unique)-1):
             if i != len(raw)-2:
-                output.write('{"name":' + '"' + str(unique[i]) + '"},\n')
+                output.write('"' + str(unique[i]) + '", ')
             else:
-                output.write('{"name":' + '"' + str(unique[i]) + '"}\n')
+               output.write('"' + str(unique[i]) + '"')
 
-
-        output.write('],\n "links":[')
+        output.write(']\n[')
 
         for i in range(0, len(left)):
             if i != len(left)-1:
-                output.write('{"source":' + str(unique.index(left[i])) + ', "target":' + str(unique.index(right[i])) + '},\n')
+                output.write('(' + str(unique.index(left[i])) + ',' + str(unique.index(right[i])) + '),')
             else:
-                output.write('{"source":' + str(unique.index(left[i])) + ', "target":' + str(unique.index(right[i])) + '}\n')
-        	    
-            
-        output.write("]}")
+                output.write('(' + str(unique.index(left[i])) + ',' + str(unique.index(right[i])) + ')]\n')
 
         output.close()
         debug.close()
