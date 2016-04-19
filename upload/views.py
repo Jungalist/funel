@@ -18,10 +18,10 @@ def upload_view(request):
     #add an in.progress var
     #use PK ids to refer to uplaods
         if form.is_valid():
-        upload = form.save()
-        path = change_name(upload)
-        runscript.delay(upload.pk, (str(upload.author.id) + '_' + str(upload.id)), path, setting, permutations, biohel_runs, attributes)
-        return render(request, 'upload/submitted.html', {'title': upload.title, 'link': 'job/' + str(upload.id)})
+            upload = form.save()
+            path = change_name(upload)
+            runscript.delay(upload.pk, (str(upload.author.id) + '_' + str(upload.id)), path, setting, permutations, biohel_runs, attributes)
+            return render(request, 'upload/submitted.html', {'title': upload.title, 'link': 'job/' + str(upload.id)})
     else:
         form = UploadFileForm()
     
@@ -46,7 +46,7 @@ def change_name(u):
 def login(request):
 #TODO and is valid
     if request.method == 'POST':
-    username = request.POST.get('username')
+        username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
         if user is not None:
@@ -67,11 +67,11 @@ def progress(request, id):
     #If the job has been started, change message to 'in progress'
     if (job.start_date is not None):
         if (job.status):
-        return redirect('results', id=id)
+            return redirect('results', id=id)
+        else:
+            progress = 'We are working on you experiment, check back later'
     else:
-        progress = 'We are working on you experiment, check back later'
-    else:
-    progress = 'Your job is in the queue, please check back later'
+        progress = 'Your job is in the queue, please check back later'
 
     return render(request, 'upload/progress.html', {'progress': progress})
 
