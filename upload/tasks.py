@@ -9,11 +9,20 @@ import time
 def runscript(current_id, name, path, setting, permutations, biohel_runs, attributes):
     u = Upload.objects.get(id=current_id)
     u.start_job()
+    
     try:
-        print 'try'
-        subprocess.check_call(["/home/seb/project/funel/upload/scripts/submit.sh", name, path, str(current_id), setting, permutations, biohel_runs, attributes])
+        # print 'try'
+        # print "Values: " + str(current_id) 
+        # print str(name)
+        # print str(path)
+        # print str(setting)
+        # print str(permutations)
+        # print str(biohel_runs)
+        # print attributes
+        subprocess.check_call(["/home/seb/project/funel/upload/scripts/submit.sh", str(name), str(path), str(current_id), str(setting), str(permutations), str(biohel_runs), str(attributes)])
     except:
         print "An error has occured with job: " + str(current_id)
+        #print "Values: " + str(current_id) + str(name) + str(path) + str(setting) + str(permutations) + str(biohel_runs) + str(attributes)
         u.job_error()
         raise NameError('submit.sh error')
 #TODO error handling for dropped connection etc. test which ones would be raised

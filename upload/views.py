@@ -20,10 +20,12 @@ def upload_view(request):
         if form.is_valid():
             upload = form.save()
             path = change_name(upload)
-            runscript.delay(upload.pk, (str(upload.author.id) + '_' + str(upload.id)), path, setting, permutations, biohel_runs, attributes)
+            runscript.delay(upload.pk, (str(upload.author.id) + '_' + str(upload.id)), path, upload.setting, upload.permutations, upload.biohel_runs, upload.attributes)
             return render(request, 'upload/submitted.html', {'title': upload.title, 'link': 'job/' + str(upload.id)})
+
     else:
         form = UploadFileForm()
+
     
     return render(request, 'upload/upload_view.html', {'form': form})
 

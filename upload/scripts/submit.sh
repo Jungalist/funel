@@ -23,7 +23,7 @@ ssh -i $rsa $linux "scp /home/u13/b3037306/data/$name.arff $hpc:data/$name.arff"
 #TODO allow user to change the parameters
 ssh -t -t -i $rsa $linux ssh $hpc << HERE
  cd scripts/funel
- ./coprediction.sh $1 ~/data/$name.arff $4 $5 $6 $7
+ ./coprediction.sh $1 ~/data/$name.arff $4 $7 $5 $6 
  exit
 HERE
 
