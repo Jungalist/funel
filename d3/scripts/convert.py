@@ -49,19 +49,10 @@ def convert(inp, id):
                 #normal line
             #end line
 
-
-            # FOR ALL NODES
-            # if i != len(raw)-2:
-            #     output.write('{"name":' + '"' + str(raw[i]) + '"},\n')
-            # else:
-        	   # output.write('{"name":' + '"' + str(raw[i]) + '"}\n')
-        #FOR ONLY UNIQUE NODES IN THE GRAPH
-        for i in range(0, len(unique)-1):
             if i != len(raw)-2:
-                output.write('{"name":' + '"' + str(unique[i]) + '"},\n')
+                output.write('{"name":' + '"' + str(raw[i]) + '"},\n')
             else:
-                output.write('{"name":' + '"' + str(unique[i]) + '"}\n')
-
+               output.write('{"name":' + '"' + str(raw[i]) + '"}\n')
 
         output.write('],\n "links":[')
 
@@ -70,7 +61,7 @@ def convert(inp, id):
                 output.write('{"source":' + str(unique.index(left[i])) + ', "target":' + str(unique.index(right[i])) + '},\n')
             else:
                 output.write('{"source":' + str(unique.index(left[i])) + ', "target":' + str(unique.index(right[i])) + '}\n')
-        	    
+                
             
         output.write("]}")
 
@@ -90,7 +81,3 @@ def convert(inp, id):
 
 
         debug.close()
-
-
-
-    

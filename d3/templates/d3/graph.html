@@ -54,8 +54,8 @@
                 var width = 960;
                 var height = 500;
                 var r = 5;
-
-                var positions = 
+//Here be positions
+ /*               var positions = 
 {"positions": [{"x":"-68.824367374", "y": "-6.10824525755"},
 {"x":"-80.8080803911", "y": "-3.38997541264"},
 {"x":"6.75334817585", "y": "-49.6040729697"},
@@ -187,7 +187,7 @@
 {"x":"-11.2565319804", "y": "16.8018457184"},
 {"x":"69.3523866117", "y": "-110.031490357"},
 {"x":"76.292129562", "y": "-119.050611729"}
-]}
+]}*/
                 
                 var posX = d3.scale.linear()
                     .range([0,960])
@@ -208,7 +208,7 @@
                     .links(data.links)
                     .start();
 
-                    force.on("start", function() {
+                    /*force.on("start", function() {
                     node
                     .data(positions.positions)
                     .attr("cx", function(d) {
@@ -218,7 +218,7 @@
                         .attr("cy", function(d) {
                             return posY(d.y);
                         })
-                });
+                });*/
 
                 //Add the svg
                 var svg = d3.select("body")
