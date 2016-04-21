@@ -1,9 +1,9 @@
-#A script to convert the raw data results from Funel to JSON ready for D3.js graph
+#A script to convert the raw data results from Funel to Python arrays readt for igraph
 import sys, os
 #import pdb; pdb.set_trace()
 
 
-def convert(inp, id):
+def convertigraph(inp, id):
     graphpath = "/home/seb/project/funel/media/graph/"
     
     #TODO from static
@@ -32,7 +32,7 @@ def convert(inp, id):
             right.append(word[1])
 
         input.close()
-        output.write('[')
+        #output.write('[')
         #get unique
         for i in range(0, len(raw)-1):
             #for j in range(i+1, len(raw)):
@@ -45,18 +45,14 @@ def convert(inp, id):
                 #normal line
             #end line
         for i in range(0, len(unique)-1):
-            if i != len(raw)-2:
-                output.write('"' + str(unique[i]) + '", ')
-            else:
-               output.write('"' + str(unique[i]) + '"')
+            if i != len(unique)-2:
+                output.write(str(unique[i]) + ' ')
 
-        output.write(']\n[')
 
-        for i in range(0, len(left)):
-            if i != len(left)-1:
-                output.write('(' + str(unique.index(left[i])) + ',' + str(unique.index(right[i])) + '),')
-            else:
-                output.write('(' + str(unique.index(left[i])) + ',' + str(unique.index(right[i])) + ')]\n')
+        output.write('\n')
+
+        for i in range(0, len(left)-1):
+            output.write('(' + str(unique.index(left[i])) + ',' + str(unique.index(right[i])) + ')\n')
 
         output.close()
         debug.close()

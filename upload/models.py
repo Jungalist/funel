@@ -67,7 +67,8 @@ class Upload(models.Model):
     def job_done(self):
         self.finish_date = timezone.now()
         json_file = convert(self.result.path, str(self.author.id) + str(self.id))
-        Graph.objects.create(assoc_job_id=self.id, json_data=json_file)
+        g = Graph.objects.create(assoc_job_id=self.id, json_data=json_file)
+        g.calculate_positions(str(self.author.id), self.result)
         self.status = True
         self.save()
 
