@@ -36,14 +36,11 @@
     
     <body>
         <div class="controls">
-            <button type="button" id="reset" class="btn btn-secondary">Reset zoom</button>
+            <button type="button" id="force" class="btn btn-secondary">Start force (can be slow with large graphs)</button>
             <button type="button" id="remove" class="btn btn-secondary">Remove linkless nodes</button>
         </div>
 
         <script type= "text/javascript" >
-            //var color = d3.scale.category10();
-            //var color = ['#339999', '#0033cc', '#00cc33', '#cc0000', '#000000']
-            //var range = color.range();
             var color = ['#eff3ff', '#bdd7e7', '#6baed6','#3182bd','#08519c']
             var scale = d3.scale.ordinal().domain([0,40]).range(color); 
 
@@ -54,52 +51,24 @@
                 var width = 960;
                 var height = 500;
                 var r = 5;
-//Here be positions
-                /*var positions = 
-{"positions": [{"x":"-68.824367374", "y": "-6.10824525755"},
-{"x":"-80.8080803911", "y": "-3.38997541264"},
-{"x":"6.75334817585", "y": "-49.6040729697"},
-{"x":"14.6608797291", "y": "-81.8897019921"},
-{"x":"5.84422695973", "y": "-139.679889715"},
-{"x":"9.4682879875", "y": "-135.716379506"},
-{"x":"-85.094877309", "y": "8.75497395921"},
-{"x":"-80.9245669198", "y": "5.12053025002"},
-{"x":"33.3048781901", "y": "-44.8532425896"},
-{"x":"51.8703622736", "y": "-63.6303684737"},
-{"x":"13.5111446833", "y": "-140.223974836"},
-{"x":"18.9477196786", "y": "-138.959580972"},
-{"x":"25.0146751873", "y": "-13.0999126259"},
-{"x":"32.7631424544", "y": "9.45273567426"},
-{"x":"-74.5791679584", "y": "9.34263809426"},
-{"x":"0.325811500616", "y": "-49.3120311745"},
-{"x":"6.02736202479", "y": "-2.57449996906"},
-{"x":"45.7498870927", "y": "-37.388602357"},
-{"x":"-72.4952347267", "y": "20.071147994"},
-{"x":"-76.4349162344", "y": "-1.18781914857"},
-{"x":"-87.9910824029", "y": "-1.41626047602"},
-{"x":"13.694644085", "y": "56.2962801967"},
-{"x":"6.84956015375", "y": "55.6873087143"},
-{"x":"11.8507228455", "y": "-145.060310626"},
-{"x":"12.660844173", "y": "-131.973694356"}]}*/
                 var positions = {{ positions | safe }};
 
                 var posX = d3.scale.linear()
-                    .range([0,960])
-                    .domain([-125,120]);
+                    .range([0,width])
+                    .domain([positions.scales[1].minX,positions.scales[0].maxX]);//TODO less hardcoded, in one entry rather than 4
+
+
 
                 var posY = d3.scale.linear()
-                    .range([0,500])
-                    .domain([-125,125]);
-                
-                console.log(posX(positions.positions[0].x));
-                console.log(posX(positions.positions[1].x));
-                console.log(posX(positions.positions[2].x));
-                for (var i = 0; i < data.nodes.length-1; i++){
-                    data.nodes[i].x = posX(positions.positions[i].x);//TODO change to i
+                    .range([0,height])
+                    .domain([positions.scales[3].minY,positions.scales[2].maxY]);
+
+
+                for (var i = 0; i < data.nodes.length; i++){
+                    data.nodes[i].x = posX(positions.positions[i].x);
                     data.nodes[i].y = posY(positions.positions[i].y);
                     data.nodes[i].fixed = true;
                 }
-                console.log(data.nodes);
 
                 var force = d3.layout.force()
                     .size([width, height])
@@ -118,6 +87,7 @@
                 var svg = d3.select("body").append("svg")
                     .attr("width", width)
                     .attr("height", height)
+                    .style("border-style", "solid")
                     .call(d3.behavior.zoom().on("zoom", function () {
                         svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
                       }))
@@ -157,23 +127,18 @@
                 }
 
                 function dblclick(d) {
-                  d3.select(this).classed("fixed", d.fixed = false);
+                    d3.select(this).classed("fixed", d.fixed = false);
                 }
 
                 function dragstart(d) {
-                  d3.event.sourceEvent.stopPropagation();
-                  d3.select(this).classed("fixed", d.fixed = true);
+                    d3.event.sourceEvent.stopPropagation();//Stops also panning on drag
+                    d3.select(this).classed("fixed", d.fixed = true);
                 }
 
                 function zoomed() {
-                  svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+                    svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
                 }
             
-
-                var scale2 = 0.5;
-                function resetZoom() {
-                    svg.attr("transform", "translate("+(width-scale*width)/2+","+(height-scale*height)/2+") scale("+scale2+")")
-                }
 
                 function removeLonelyNodes() {
                     node.filter(function(d){
@@ -182,6 +147,12 @@
                             }})
                         .remove();
                 }
+
+
+                //Start force
+                document.getElementById("force").addEventListener("click", function() {
+                    node.classed('fixed', function(d) { return d['fixed'] = false; });
+                });
                 
         });
     </script>
