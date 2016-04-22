@@ -6,6 +6,7 @@
     <title> D3 Test </title> 
     <script type = "text/javascript" src = "{% static "d3.v3.js" %}" > </script> 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     </head> 
     <style>
@@ -19,25 +20,92 @@
         stroke-width: 2 px;
     }
 
+
+
     .link {
         stroke: #777;
         stroke-width: 2px;
     }
 
-    .controls {
-        right: 100px;
-        position: fixed;
-        top: 10px;
-        width: 150px;
-     }
+    .hi-link {
+        stroke:red;
+        stroke-width: 2px;
+    }
 
+    svg {
+       /* float:right;
+        margin-right:2px;*/
+
+    }     
+    .controls {
+        height:44px;
+        width:auto;
+        background-color:#333;
+    }
+
+    .controls button {
+        background-color: #333;
+        color: white;
+        padding: 10px;
+        margin: 0;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+    .dropdown-btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .display-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .display-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    }
+
+    .display-content button {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .display-content button:hover {background-color: #f1f1f1}
+
+    .display-container:hover .display-content {
+        display: block;
+    }
+
+    .display-container:hover .dropdown-btn {
+        background-color: #ccc;
+        color: black;
+    }
 
     </style>
     
     <body>
         <div class="controls">
-            <button type="button" id="force" class="btn btn-secondary">Start force (can be slow with large graphs)</button>
-            <button type="button" id="remove" class="btn btn-secondary">Remove linkless nodes</button>
+            <button type="button" id="start-force">Start force</button>
+            <button type="button" id="stop-force">Stop force</button>
+            <div class="display-container">
+              <button class="dropdown-btn">Display Options</button>
+              <div class="display-content">
+                <button type="button">Dropdown</button>
+                <button type="button">Dropdown</button>
+                <button type="button">Dropdown</button>
+              </div>
+            </div>
+
         </div>
 
         <script type= "text/javascript" >
@@ -46,10 +114,11 @@
 
 
             $(document).ready(function(){
+                 
                 //Load in the json file
                 var data = {{ json | safe }};
-                var width = 960;
-                var height = 500;
+                var width = window.innerWidth;
+                var height = window.innerHeight-50;
                 var r = 5;
                 var positions = {{ positions | safe }};
 
@@ -67,7 +136,7 @@
                 for (var i = 0; i < data.nodes.length; i++){
                     data.nodes[i].x = posX(positions.positions[i].x);
                     data.nodes[i].y = posY(positions.positions[i].y);
-                    data.nodes[i].fixed = true;
+                    //data.nodes[i].fixed = true;
                 }
 
                 var force = d3.layout.force()
@@ -96,8 +165,15 @@
 
                 d3.select("svg").on("dblclick.zoom", null);
 
+
+
                 var link = svg.selectAll(".link"),
                     node = svg.selectAll(".node");
+
+                    
+
+
+                    
 
             force
                   .nodes(data.nodes)
@@ -113,7 +189,25 @@
                   .attr("class", "node")
                   .attr("r", r)
                   .on("dblclick", dblclick)
-                  .call(drag);
+                  .call(drag)
+                  .on("mouseover", function (d) {
+                        link.style('stroke-width', function(s) {
+                            if (d === s.source || d === s.target){
+                                return 4;
+                            }
+                            else {
+                                return 2;
+                            }                           
+                        });
+                    });
+
+                  // Set the stroke width back to normal when mouse leaves the node.
+                    svg.selectAll(".node").on('mouseout', function() {
+                      link.style('stroke-width', 2);
+                    });
+
+
+//------------------------------------------------------------------------------------------------------
 
 
                 function tick() {
@@ -148,11 +242,15 @@
                         .remove();
                 }
 
-
                 //Start force
-                document.getElementById("force").addEventListener("click", function() {
+                $("#start-force").click(function() {
                     node.classed('fixed', function(d) { return d['fixed'] = false; });
                 });
+                //Stop force
+                $("#stop-force").click(function() {
+                    node.classed('fixed', function(d) { return d['fixed'] = true; });
+                });
+
                 
         });
     </script>

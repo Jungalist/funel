@@ -17,6 +17,7 @@ def convertigraph(inp, id):
     left = []
     right = []
 
+
     try:
         #Read the input from argument
         input = open(inp, 'r')
@@ -53,7 +54,7 @@ def convertigraph(inp, id):
 
         for i in range(0, len(left)-1):
             output.write('(' + str(unique.index(left[i])) + ',' + str(unique.index(right[i])) + ')\n')
-
+        print str(outpath)
         output.close()
         debug.close()
         return outpath

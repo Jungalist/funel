@@ -49,7 +49,6 @@ def convert(inp, id):
                 #normal line
             #end line
 
-        print "unique: " + str(len(unique))
         for i in range(0, len(unique)):
             print str(i)
             if i != len(unique)-1:

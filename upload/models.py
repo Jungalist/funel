@@ -17,6 +17,7 @@ class Upload(models.Model):
 
     PERMUTATIONS = (
         (10, '10'),
+        (15, '15'),
         (50, '50'),
         (100, '100'),
         (200, '200'),
@@ -24,6 +25,7 @@ class Upload(models.Model):
 
     BIOHEL = (
         (2, '2'),
+        (15, '15'),
         (250, '250'),
         (500, '500'),
         (1000, '1000'),
@@ -43,7 +45,7 @@ class Upload(models.Model):
     status = models.BooleanField(default=False)
     error = models.BooleanField(default=False)
     submit_date = models.DateTimeField(
-            default=timezone.now)
+            default=timezone.now) 
     start_date = models.DateTimeField(
             blank=True, null=True)
     finish_date = models.DateTimeField(
@@ -71,6 +73,7 @@ class Upload(models.Model):
         g.calculate_positions(str(self.author.id), self.result)
         self.status = True
         self.save()
+        g.save()
 
     def __str__(self):
         return str(self.id)

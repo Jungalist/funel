@@ -28,7 +28,6 @@ g = igraph.Graph(links, bbox = bbox)
 
 layout = g.layout("fr")
 
-igraph.plot(g, layout = layout)
 
 #extract coordinates and write them to json TODO hardcoded 1
 pospath = "/home/seb/project/funel/media/graph/1" + str(id) + "/positions.json"
