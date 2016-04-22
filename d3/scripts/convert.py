@@ -49,10 +49,13 @@ def convert(inp, id):
                 #normal line
             #end line
 
-            if i != len(raw)-2:
-                output.write('{"name":' + '"' + str(raw[i]) + '"},\n')
+        print "unique: " + str(len(unique))
+        for i in range(0, len(unique)):
+            print str(i)
+            if i != len(unique)-1:
+                output.write('{"name":' + '"' + str(unique[i]) + '"},\n')
             else:
-               output.write('{"name":' + '"' + str(raw[i]) + '"}\n')
+               output.write('{"name":' + '"' + str(unique[i]) + '"}\n')
 
         output.write('],\n "links":[')
 

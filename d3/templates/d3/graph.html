@@ -55,7 +55,7 @@
                 var height = 500;
                 var r = 5;
 //Here be positions
-                var positions = 
+                /*var positions = 
 {"positions": [{"x":"-68.824367374", "y": "-6.10824525755"},
 {"x":"-80.8080803911", "y": "-3.38997541264"},
 {"x":"6.75334817585", "y": "-49.6040729697"},
@@ -80,7 +80,8 @@
 {"x":"13.694644085", "y": "56.2962801967"},
 {"x":"6.84956015375", "y": "55.6873087143"},
 {"x":"11.8507228455", "y": "-145.060310626"},
-{"x":"12.660844173", "y": "-131.973694356"}]}
+{"x":"12.660844173", "y": "-131.973694356"}]}*/
+                var positions = {{ positions | safe }};
 
                 var posX = d3.scale.linear()
                     .range([0,960])
@@ -90,10 +91,13 @@
                     .range([0,500])
                     .domain([-125,125]);
                 
-                for (var i = 0; i < data.nodes.length; i++){
-                    data.nodes[i].x = posX(positions.positions[i].x);
+                console.log(posX(positions.positions[0].x));
+                console.log(posX(positions.positions[1].x));
+                console.log(posX(positions.positions[2].x));
+                for (var i = 0; i < data.nodes.length-1; i++){
+                    data.nodes[i].x = posX(positions.positions[i].x);//TODO change to i
                     data.nodes[i].y = posY(positions.positions[i].y);
-                    data.nodes[i].fixed = false;
+                    data.nodes[i].fixed = true;
                 }
                 console.log(data.nodes);
 
