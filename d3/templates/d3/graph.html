@@ -20,7 +20,11 @@
         stroke-width: 2 px;
     }
 
-
+    .hi-node {
+        fill: red;
+        stroke: blue;
+        stroke-width: 4 px;
+    }
 
     .link {
         stroke: #777;
@@ -29,7 +33,7 @@
 
     .hi-link {
         stroke:red;
-        stroke-width: 2px;
+        stroke-width: 4px;
     }
 
     svg {
@@ -91,6 +95,12 @@
         color: black;
     }
 
+    .search {
+        margin-top:10px;
+        margin-right:5px;
+        float:right;
+    }
+
     </style>
     
     <body>
@@ -105,6 +115,8 @@
                 <button type="button">Dropdown</button>
               </div>
             </div>
+            <input type="text" id="search" class="search">
+            <button type="submit" id="searchbtn">search</button>
 
         </div>
 
@@ -136,13 +148,13 @@
                 for (var i = 0; i < data.nodes.length; i++){
                     data.nodes[i].x = posX(positions.positions[i].x);
                     data.nodes[i].y = posY(positions.positions[i].y);
-                    //data.nodes[i].fixed = true;
+                    data.nodes[i].fixed = true;
                 }
 
                 var force = d3.layout.force()
                     .size([width, height])
-                    .charge(-400)
-                    .linkDistance(40)
+                    .charge(-150)
+                    .linkDistance(30)
                     .on("tick", tick);
 
                 var drag = force.drag()
@@ -170,11 +182,6 @@
                 var link = svg.selectAll(".link"),
                     node = svg.selectAll(".node");
 
-                    
-
-
-                    
-
             force
                   .nodes(data.nodes)
                   .links(data.links)
@@ -191,21 +198,25 @@
                   .on("dblclick", dblclick)
                   .call(drag)
                   .on("mouseover", function (d) {
-                        link.style('stroke-width', function(s) {
+                        link.classed("hi-link", function(s){
                             if (d === s.source || d === s.target){
-                                return 4;
+                                return true;
                             }
                             else {
-                                return 2;
-                            }                           
+                                return false;
+                            }
                         });
+
+                        
+                    })
+                  .on('mouseout', function() {
+                      link.classed("hi-link", false);
                     });
 
-                  // Set the stroke width back to normal when mouse leaves the node.
-                    svg.selectAll(".node").on('mouseout', function() {
-                      link.style('stroke-width', 2);
+                   node.append("title")
+                    .text(function(d) {
+                        return d.name;
                     });
-
 
 //------------------------------------------------------------------------------------------------------
 
@@ -241,6 +252,26 @@
                             }})
                         .remove();
                 }
+
+                function search() {
+                    var searched = $("#search").val();
+                    var found = node.filter(function(d){
+                        if(d.name == searched){
+                            return this;
+                        }})
+                        .classed("hi-node", true)
+                        .attr("r", 10);
+                    if (found == 0){
+                        alert("Sorry, that node is not in the graph. It didn't have any connections.");
+                    }
+                }
+
+                $("#searchbtn").click(function() {
+                    node
+                        .classed("hi-node", false)
+                        .attr("r", r);
+                    search();
+                });
 
                 //Start force
                 $("#start-force").click(function() {
