@@ -114,7 +114,7 @@
             <div class="display-container">
               <button class="dropdown-btn">Display Options</button>
               <div class="display-content">
-                <button type="button">Dropdown</button>
+                <button type="button">Highlight on centrality</button><!--TODO implement and add min width to all -->
                 <button type="button">Dropdown</button>
                 <button type="button">Dropdown</button>
               </div>
@@ -127,10 +127,6 @@
         </div>
 
         <script type= "text/javascript" >
-            var color = ['#eff3ff', '#bdd7e7', '#6baed6','#3182bd','#08519c']
-            var scale = d3.scale.ordinal().domain([0,40]).range(color); 
-
-
             $(document).ready(function(){
                  
                 //Load in the json file
@@ -139,6 +135,13 @@
                 var height = window.innerHeight-50;
                 var r = 5;
                 var positions = {{ positions | safe }};
+
+                //var color = ['#eff3ff', '#bdd7e7', '#6baed6','#3182bd','#08519c']
+                var color = ["#ffffff","#e2e6f4", "#c6cde9", "#aab4de", "#8d9bd3", "#7182c9", "#5569be", "#3850b3", "#1c37a8", "#001f9e", "#01186B"];
+                var extent = d3.extent(positions, function(d){
+                    return d.betweeness; //-----------------TODO - its centrality not betweeness
+                });
+                var scale = d3.scale.ordinal().domain(extent).range(color);
 
                 var posX = d3.scale.linear()
                     .range([0,width])
@@ -152,8 +155,10 @@
                 for (var i = 0; i < data.nodes.length; i++){
                     data.nodes[i].x = posX(positions.positions[i].x);
                     data.nodes[i].y = posY(positions.positions[i].y);
+                    data.nodes[i].betweeness = positions.positions[i].betweeness;
                     data.nodes[i].fixed = true;
                 }
+                console.log(data.nodes);
 
                 var force = d3.layout.force()
                     .size([width, height])
@@ -199,11 +204,15 @@
                 .enter().append("circle")
                   .attr("class", "node")
                   .attr("r", r)
+                  .style("fill", function (d) { 
+
+                    return scale(d.betweeness); 
+                })
                   .on("dblclick", dblclick)
                   .call(drag)
                   .on("mouseover", function (d) {
                         link.classed("hi-link", function(s){
-                            if (d === s.source || d === s.target){
+                            if (d === s.source || d === s.target){//TODO change to == or === everywhere
                                 return true;
                             }
                             else {
@@ -256,6 +265,8 @@
                             }})
                         .remove();
                 }
+
+                //TODO use adjacency matrix in igraph instead of doing it here dynamically
 
                 function search() {
                     var searched = $("#search").val();
