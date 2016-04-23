@@ -95,9 +95,13 @@
         color: black;
     }
 
-    .search {
+    #search {
         margin-top:10px;
         margin-right:5px;
+        float:right;
+    }
+
+    #searchbtn {
         float:right;
     }
 
@@ -115,8 +119,10 @@
                 <button type="button">Dropdown</button>
               </div>
             </div>
+            
+            
             <input type="text" id="search" class="search">
-            <button type="submit" id="searchbtn">search</button>
+            <button type="submit" id="searchbtn">Search</button>
 
         </div>
 
@@ -137,8 +143,6 @@
                 var posX = d3.scale.linear()
                     .range([0,width])
                     .domain([positions.scales[1].minX,positions.scales[0].maxX]);//TODO less hardcoded, in one entry rather than 4
-
-
 
                 var posY = d3.scale.linear()
                     .range([0,height])
@@ -263,8 +267,9 @@
                         .attr("r", 10);
                     if (found == 0){
                         alert("Sorry, that node is not in the graph. It didn't have any connections.");
-                    }
+                    } 
                 }
+
 
                 $("#searchbtn").click(function() {
                     node
