@@ -11,23 +11,20 @@
     </head> 
     <style>
 /*TODO download all libraries
-
-*/
-    
+  */
     .node {
-        fill: #0066FF;
         stroke: #000;
         stroke-width: 2 px;
     }
 
     .hi-node {
-        fill: red;
-        stroke: blue;
+        fill: #FFF;
+        stroke: black;
         stroke-width: 4 px;
     }
 
     .link {
-        stroke: #777;
+        stroke: #bbbbbb;
         stroke-width: 2px;
     }
 
@@ -36,11 +33,6 @@
         stroke-width: 4px;
     }
 
-    svg {
-       /* float:right;
-        margin-right:2px;*/
-
-    }     
     .controls {
         height:44px;
         width:auto;
@@ -65,32 +57,36 @@
         cursor: pointer;
     }
 
-    .display-container {
+    .dropdown-container {
         position: relative;
         display: inline-block;
     }
 
-    .display-content {
+    .dropdown-content {
         display: none;
         position: absolute;
         background-color: #f9f9f9;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     }
 
-    .display-content button {
-        color: black;
+    .dropdown-content button {
+        color: #fff;
         padding: 12px 16px;
         text-decoration: none;
         display: block;
+        min-width: 133px;
     }
 
-    .display-content button:hover {background-color: #f1f1f1}
+    .dropdown-content button:hover {
+        background-color: #ccc;
+        color:#000;
+    }
 
-    .display-container:hover .display-content {
+    .dropdown-container:hover .dropdown-content {
         display: block;
     }
 
-    .display-container:hover .dropdown-btn {
+    .dropdown-container:hover .dropdown-btn {
         background-color: #ccc;
         color: black;
     }
@@ -105,43 +101,71 @@
         float:right;
     }
 
+    #searchbtn:hover {
+        color:#ccc;
+    }
+
+    #logo {
+        bottom: 15px;
+        right: 15px;
+        position:fixed;
+        height:75px;
+        width:75px;
+    }
+
     </style>
     
     <body>
         <div class="controls">
             <button type="button" id="start-force">Start force</button>
             <button type="button" id="stop-force">Stop force</button>
-            <div class="display-container">
+            <div class="dropdown-container">
               <button class="dropdown-btn">Display Options</button>
-              <div class="display-content">
-                <button type="button">Highlight on centrality</button><!--TODO implement and add min width to all -->
-                <button type="button">Dropdown</button>
-                <button type="button">Dropdown</button>
+              <div class="dropdown-content">
+                <button id="centrality" type="button">Colour by centrality</button>
+                <button id="betweeness" type="button">Colour by betweeness</button>
+              </div>
+            </div>
+
+            <div class="dropdown-container">
+              <button class="dropdown-btn">Help</button>
+              <div class="dropdown-content">
+                    <button id="interaction-help" type="button">Interaction</button>
+                    <button id="force-help" type="button">Force</button>
+                    <button id="searching-help" type="button">Searching</button>
+                    <button id="contact-help" type="button">Contact Us</button>
               </div>
             </div>
             
             
             <input type="text" id="search" class="search">
-            <button type="submit" id="searchbtn">Search</button>
+            <button type="submit" id="searchbtn">Search Nodes</button>
 
         </div>
+        <img id="logo" src="{% static 'icos_icon_400x400.png' %}" />
 
         <script type= "text/javascript" >
             $(document).ready(function(){
-                 
                 //Load in the json file
                 var data = {{ json | safe }};
                 var width = window.innerWidth;
                 var height = window.innerHeight-50;
-                var r = 5;
+                var r = 8;
                 var positions = {{ positions | safe }};
 
                 //var color = ['#eff3ff', '#bdd7e7', '#6baed6','#3182bd','#08519c']
                 var color = ["#ffffff","#e2e6f4", "#c6cde9", "#aab4de", "#8d9bd3", "#7182c9", "#5569be", "#3850b3", "#1c37a8", "#001f9e", "#01186B"];
-                var extent = d3.extent(positions, function(d){
-                    return d.betweeness; //-----------------TODO - its centrality not betweeness
+
+
+                var centralityExtent = d3.extent(positions, function(d){
+                    return d.eigenvector_centrality; //-----------------TODO - its centrality not betweeness/RANDOM COLORS??
                 });
-                var scale = d3.scale.ordinal().domain(extent).range(color);
+                var betweenessExtent = d3.extent(positions, function(d){
+                    return d.betweeness; 
+                });
+
+                var centralityScale = d3.scale.ordinal().domain([0,6]).range(color);// TODO dynamic range that makes sense
+                var betweenessScale = d3.scale.ordinal().domain(betweenessExtent).range(color);
 
                 var posX = d3.scale.linear()
                     .range([0,width])
@@ -151,14 +175,18 @@
                     .range([0,height])
                     .domain([positions.scales[3].minY,positions.scales[2].maxY]);
 
-
                 for (var i = 0; i < data.nodes.length; i++){
                     data.nodes[i].x = posX(positions.positions[i].x);
                     data.nodes[i].y = posY(positions.positions[i].y);
                     data.nodes[i].betweeness = positions.positions[i].betweeness;
+                    data.nodes[i].eigenvector_centrality = positions.positions[i].eigenvector_centrality;
                     data.nodes[i].fixed = true;
+                    if(data.nodes[i].name == "U19495_s_at"){
+                        console.log(data.nodes[i].eigenvector_centrality);
+                        console.log(centralityScale(data.nodes[i].eigenvector_centrality));
+                    }
                 }
-                console.log(data.nodes);
+
 
                 var force = d3.layout.force()
                     .size([width, height])
@@ -205,26 +233,25 @@
                   .attr("class", "node")
                   .attr("r", r)
                   .style("fill", function (d) { 
-
-                    return scale(d.betweeness); 
+                    return betweenessScale(d.betweeness); 
                 })
                   .on("dblclick", dblclick)
                   .call(drag)
                   .on("mouseover", function (d) {
                         link.classed("hi-link", function(s){
-                            if (d === s.source || d === s.target){//TODO change to == or === everywhere
+                            if (d == s.source || d == s.target){//TODO change to == or === everywhere
                                 return true;
                             }
                             else {
                                 return false;
                             }
-                        });
-
-                        
+                        });                        
                     })
                   .on('mouseout', function() {
                       link.classed("hi-link", false);
                     });
+
+
 
                    node.append("title")
                     .text(function(d) {
@@ -256,18 +283,8 @@
                 function zoomed() {
                     svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
                 }
-            
-
-                function removeLonelyNodes() {
-                    node.filter(function(d){
-                            if(d.weight==0){
-                                return this;
-                            }})
-                        .remove();
-                }
 
                 //TODO use adjacency matrix in igraph instead of doing it here dynamically
-
                 function search() {
                     var searched = $("#search").val();
                     var found = node.filter(function(d){
@@ -275,17 +292,27 @@
                             return this;
                         }})
                         .classed("hi-node", true)
-                        .attr("r", 10);
+                        .attr("r", 13)
+                        .style("fill", "red");
                     if (found == 0){
                         alert("Sorry, that node is not in the graph. It didn't have any connections.");
                     } 
                 }
 
+                var activeColor = "betweeness";
 
                 $("#searchbtn").click(function() {
                     node
                         .classed("hi-node", false)
-                        .attr("r", r);
+                        .classed("node", true)
+                        .attr("r", r)
+                        .style("fill", function (d) {
+                            if (activeColor=='betweeness') {
+                                return betweenessScale(d.betweeness); 
+                            } else if(activeColor=='centrality'){
+                                return centralityScale(d.eigenvector_centrality); 
+                            }
+                        });
                     search();
                 });
 
@@ -297,6 +324,35 @@
                 $("#stop-force").click(function() {
                     node.classed('fixed', function(d) { return d['fixed'] = true; });
                 });
+
+                //Colour by centrality
+                $("#centrality").click(function() {
+                    node.style("fill", function (d) { return centralityScale(d.eigenvector_centrality); });
+                    node.attr("r", r);
+                    activeColor = "centrality";
+
+                });
+
+                //Colour by betweeness
+                $("#betweeness").click(function() {
+                    node.style("fill", function (d) { return betweenessScale(d.betweeness); });
+                    node.attr("r", r);
+                    activeColor = "betweeness";
+                });
+
+                $("#interaction-help").click(function() {
+                    alert("Nodes are initially static, they can be moved around the graph by dragging and will be fixed in the position they were released. Double clicking the node will allow it to move freely. You can also change the parameters of node colours under 'Display Options'.");
+                });
+                $("#force-help").click(function() {
+                    alert("The force allows for the nodes to move around and will result in a better looking layout. NOTE: keep the force off if it causes your machine to freeze. The larger the graph the slower rendering will be. You can still move the nodes around when the graph is static.");
+                });
+                $("#searching-help").click(function() {
+                    alert("Just type in the full name of your node and press 'Search Nodes' to highlight it on the graph. If you cannot find it, it most likely didn't have any connections.");
+                });
+                $("#contact-help").click(function() {
+                    alert("If you have any questions regarding Funel, please email jaume.bacardit@ncl.ac.uk");
+                });
+                
 
                 
         });
