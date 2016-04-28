@@ -16,7 +16,7 @@ class Upload(models.Model):
     )
 
     PERMUTATIONS = (
-        (10, '10'),
+        (1, '1'),
         (15, '15'),
         (50, '50'),
         (100, '100'),
@@ -40,7 +40,7 @@ class Upload(models.Model):
     )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
-    title = models.CharField(max_length=20)
+    title = models.CharField(max_length=20, blank=True)
 #TODO - change status to be a text field and merge with error
     status = models.BooleanField(default=False)
     error = models.BooleanField(default=False)
@@ -68,6 +68,8 @@ class Upload(models.Model):
     #TODO change id permamently
     def job_done(self):
         self.finish_date = timezone.now()
+        print self
+        print str(self.author.id)
         json_file = convert(self.result.path, str(self.author.id) + str(self.id))
         g = Graph.objects.create(assoc_job_id=self.id, json_data=json_file)
         g.calculate_positions(str(self.author.id), self.result)

@@ -2,8 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from .forms import UploadFileForm
 from .models import Upload
-
-from django.contrib.auth.models import User
+from newuser.models import EmailUser
 from upload.tasks import runscript
 import os
 from django.conf import settings
@@ -16,13 +15,29 @@ def upload_view(request):
     #add an in.progress var
     #use PK ids to refer to uplaods
         if form.is_valid():
+            email = request.POST['email']
+            user = EmailUser.objects.get(email=email)
             upload = form.save()
+            upload.author.id = user.id
+            #upload.author = user
+            #it gets set correctly here but as soon as it goes to the task, it shows id as 1 again?!
+            print 'form valid view 1: ' + str(upload.author.id)
+            upload.save()
             path = change_name(upload)
-            runscript.delay(upload.pk, (str(upload.author.id) + '_' + str(upload.id)), path, upload.setting, upload.permutations, upload.biohel_runs, upload.attributes)
+            print 'user submitted a job: ' + str(upload.author.id)
+            runscript.delay(upload.id, str(user.id), (str(upload.author.id) + '_' + str(upload.id)), path, upload.setting, upload.permutations, upload.biohel_runs, upload.attributes)
+            print 'form valid view 2: ' + str(upload.author.id)
             return render(request, 'upload/submitted.html', {'title': upload.title, 'link': 'job/' + str(upload.id)})
 
     else:
-        form = UploadFileForm()
+        user = request.user
+        if user.id is not None:
+            form = UploadFileForm(initial={'email': user})
+        else:
+            form = UploadFileForm(initial={'email': ''})
+
+        
+        #do some logic to handle new user
 
     
     return render(request, 'upload/upload_view.html', {'form': form})
@@ -34,13 +49,13 @@ def index(request):
 #TODO file extension 
 #TODO split into files/classes
 def change_name(u):
+    print 'views.change_name top: ' + str(u.author.id)
     old = u.file.path
-    print "old: " + str(old)
     new = settings.MEDIA_ROOT + '/' + 'experiments' + '/' + str(u.author.id) + '_' + str(u.id) + '.arff'
     os.rename(old, new)
     setattr(u, 'file', new)
     u.save()
-    print "new: " + new
+    print 'views.change_name bottom: ' + str(u.author.id)
     return new
 
 def progress(request, id):

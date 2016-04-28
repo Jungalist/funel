@@ -23,6 +23,8 @@
         </div>
     {% endif %}
 	<form class="upload" method="post" action="../upload/" enctype="multipart/form-data">{% csrf_token %}
+		<label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+        {{ form.email }}
 		<label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
 	        {{ form.title }}
 		<span style="margin:0 auto;"><label for="{{ form.file.id_for_label }}">{{ form.file.label }}</label>
@@ -37,6 +39,7 @@
 		        {{ form.biohel_runs }}
 		     <label for="{{ form.attributes.id_for_label }}">{{ form.attributes.label }}</label>
 		        {{ form.attributes }}
+
 	    </div>
 
 		<!-- <a href="http://82.35.221.203/upload/job/775883c9-ddaa-4951-be69-2ea0e94bed8b/results/">

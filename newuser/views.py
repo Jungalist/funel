@@ -35,6 +35,7 @@ def profile(request):
 
 #from django.contrib.auth import login
 #if logged in, log out or check cookie and login if same user maybe prompt with last seen date
+#your job is ready - resend link but if the user has visited before they stay logged in - set timeout to 100years
 def email_login(request, token):
     user = EmailUser.objects.get(token=token)
     user.backend = 'django.contrib.auth.backends.ModelBackend'

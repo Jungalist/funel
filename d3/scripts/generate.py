@@ -2,7 +2,8 @@ import igraph
 import sys, ast
 
 pos = sys.argv[1]
-id = sys.argv[2]
+user = sys.argv[2]
+id = sys.argv[3]
 
 links = []
 names = []
@@ -31,7 +32,7 @@ eigenvector_centrality = g.eigenvector_centrality()
 betweeness = g.betweenness()
 
 #extract coordinates and write them to json TODO hardcoded 1
-pospath = "/home/seb/project/funel/media/graph/1" + str(id) + "/positions.json"
+pospath = "/home/seb/project/funel/media/graph/"+ str(user) + '_' + str(id) + "/positions.json"
 with open(pospath, 'w+') as f:
     f.write('{"positions": [')
     

@@ -19,8 +19,8 @@ class Graph(models.Model):
 
     #Methods here to generate json and graph
     def calculate_positions(self, author, result):
-        pos = convertigraph(str(result), str(author) + str(self.assoc_job_id))
-        subprocess.check_call(["/usr/bin/python", "/home/seb/project/funel/d3/scripts/generate.py", pos, str(self.assoc_job_id)])
+        pos = convertigraph(str(result), str(author) + '_' + str(self.assoc_job_id))
+        subprocess.check_call(["/usr/bin/python", "/home/seb/project/funel/d3/scripts/generate.py", pos, str(author), str(self.assoc_job_id)])
         #TODO fix the hardcoded 1, make sure names are consistent
-        self.positions = "/home/seb/project/funel/media/graph/1" + str(self.assoc_job_id) + "/positions.json"
+        self.positions = "/home/seb/project/funel/media/graph/" + str(author) + '_' + str(self.assoc_job_id) + "/positions.json"
         #setattr(self, str(self.positions), "/home/seb/project/funel/media/graph/1" + str(self.assoc_job_id) + "/positions.json")

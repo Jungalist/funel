@@ -1,12 +1,9 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 import uuid
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-
 
 class EmailUserManager(BaseUserManager):
 
@@ -31,10 +28,6 @@ class EmailUserManager(BaseUserManager):
         email,
         password,
         ):
-        """
-        Creates and saves a superuser with the given email, date of
-        birth and password.
-        """
 
         user = self.create_user(email, password=password)
         user.is_admin = True
@@ -99,9 +92,7 @@ class EmailUser(AbstractBaseUser):
 
 
 @receiver(post_save, sender=EmailUser)
-def my_handler(sender, instance, created, **kwargs):
+def generate_token(sender, instance, created, **kwargs):
 	if created:
-		print 'created'
 		instance.token = uuid.uuid1().hex
 		instance.save()
-		print str(instance.token)

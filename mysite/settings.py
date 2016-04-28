@@ -34,7 +34,7 @@ INSTALLED_APPS = (
     'widget_tweaks',
     'kombu.transport.django',
     'd3',
-    'newuser'
+    'newuser',
 )
 
 
