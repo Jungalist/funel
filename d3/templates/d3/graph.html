@@ -48,6 +48,11 @@
         border: none;
         cursor: pointer;
     }
+    .controls button:hover {
+        background-color: #333;
+        color: #ccc;
+    }
+
     .dropdown-btn {
         background-color: #4CAF50;
         color: white;
@@ -168,7 +173,7 @@
                 var betweenessScale = d3.scale.ordinal().domain(betweenessExtent).range(color);
 
                 var posX = d3.scale.linear()
-                    .range([0,width])
+                    .range([100,width-100])
                     .domain([positions.scales[1].minX,positions.scales[0].maxX]);//TODO less hardcoded, in one entry rather than 4
 
                 var posY = d3.scale.linear()
@@ -239,7 +244,7 @@
                   .call(drag)
                   .on("mouseover", function (d) {
                         link.classed("hi-link", function(s){
-                            if (d == s.source || d == s.target){//TODO change to == or === everywhere
+                            if (d == s.source || d == s.target){
                                 return true;
                             }
                             else {

@@ -2,9 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from .forms import UploadFileForm
 from .models import Upload
-from django.contrib import auth
-from django.contrib.auth import login as auth_login
-from django.contrib.auth import authenticate
+
 from django.contrib.auth.models import User
 from upload.tasks import runscript
 import os
@@ -44,23 +42,6 @@ def change_name(u):
     u.save()
     print "new: " + new
     return new
-    
-def login(request):
-#TODO and is valid
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                auth_login(request, user)
-                return render(request, 'upload/index.html', {'msg': 'Welcome back'})
-            else:
-                return render(request, 'upload/index.html', {'msg': 'Account disabled'})
-        else:
-            return render(request, 'registration/login.html', {'msg': 'Try logging in again'})
-    else:
-        return render(request, 'registration/login.html', {})
 
 def progress(request, id):
     #TODO only show users their own jobs/do all the view handling logic here not in html
@@ -79,7 +60,10 @@ def progress(request, id):
 
 def show_jobs(request):
     jobs = Upload.objects.filter(author=request.user)
-    return render(request, 'upload/jobs.html', {'jobs': jobs})
+    message = ''
+    if not jobs:
+        message = 'You have no jobs'
+    return render(request, 'upload/jobs.html', {'jobs': jobs, 'message': message})
 
 def result(request, id):
 
