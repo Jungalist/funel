@@ -6,6 +6,10 @@ from newuser.models import EmailUser
 from upload.tasks import runscript
 import os
 from django.conf import settings
+from django.contrib.auth import logout
+from django.contrib import auth
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import authenticate
 #import pdb; pdb.set_trace() -debug
 
 def upload_view(request):  
@@ -16,9 +20,17 @@ def upload_view(request):
     #use PK ids to refer to uplaods
         if form.is_valid():
             email = request.POST['email']
-            user = EmailUser.objects.get(email=email)
+            user = EmailUser.objects.filter(email=email)
+            if not user:
+                logout(request)
+                user = EmailUser.objects.create(email=email)
+                user.backend = 'django.contrib.auth.backends.ModelBackend'
+                auth_login(request, user)
+            else: 
+                user = EmailUser.objects.get(email=email)
+            print user.id
             upload = form.save()
-            upload.author.id = user.id
+            upload.author.id = user.id#may be redundant
             #upload.author = user
             #it gets set correctly here but as soon as it goes to the task, it shows id as 1 again?!
             upload.save()

@@ -28,5 +28,8 @@ urlpatterns = [
     url(r'^user/', show_jobs),
     url('^login/$', login, name='login'),
     url(r'^login/email/(?P<token>[0-9a-z-]+)$', email_login),
+    url(r'^contact/$', contact, name='contact'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'})
+
     
 ]

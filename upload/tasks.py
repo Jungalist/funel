@@ -9,9 +9,11 @@ from django.core.urlresolvers import reverse
 
 @shared_task
 def runscript(current_id, author_id, name, path, setting, permutations, biohel_runs, attributes):
+    print 'argument user:' + author_id
     u = Upload.objects.get(id=current_id)
     user = EmailUser.objects.get(id=author_id)
-    u.author.id = user.id
+    u.author = user
+    u.save()
     u.start_job()
     print 'before try author: ' + str(u.author.id)
     try:
@@ -26,10 +28,10 @@ def runscript(current_id, author_id, name, path, setting, permutations, biohel_r
     print 'job done id: ' + str(current_id)
     result = '/home/seb/project/funel/media/results/' + str(u.author.id) + '_' + str(current_id) + '/co-prediction.txt' 
     u.save_result(result)
-    print 'in task author: ' + str(u.author.id)
+    print 'before jobdone author: ' + str(u.author.id)
     u.job_done()
     user = EmailUser.objects.get(id=u.author.id)
-    print user
+
     token = user.token
 #TODO chnage hardcoded url
     send_mail('Your Funel Network Has Been Generated', 

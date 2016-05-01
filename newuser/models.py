@@ -49,9 +49,6 @@ class EmailUser(AbstractBaseUser):
     USERNAME_FIELD = 'email'
 
 
-# put in its own file to minimise side-effects
-
-
     def get_full_name(self):
 
         # The user is identified by their email address
@@ -90,7 +87,7 @@ class EmailUser(AbstractBaseUser):
         return self.is_admin
 
 
-
+# put in its own file to minimise side-effects
 @receiver(post_save, sender=EmailUser)
 def generate_token(sender, instance, created, **kwargs):
 	if created:

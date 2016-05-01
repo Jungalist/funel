@@ -41,9 +41,11 @@ def email_login(request, token):
     return redirect('/user/jobs/')
 
 def show_jobs(request):
-    jobs = Upload.objects.filter(author=request.user)
-    print request.user
+    ordered_jobs = Upload.objects.filter(author=request.user).order_by('-start_date')
     message = ''
-    if not jobs:
+    if not ordered_jobs:
         message = 'You have no jobs'
-    return render(request, 'registration/jobs.html', {'jobs': jobs, 'message': message})
+    return render(request, 'registration/jobs.html', {'jobs': ordered_jobs, 'message': message})
+
+def contact(request):
+    pass

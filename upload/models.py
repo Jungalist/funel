@@ -82,7 +82,6 @@ class Upload(models.Model):
 
     def save_result(self, r):
         self.result = r
-
         self.save()
 
 #TODO use this
@@ -93,4 +92,8 @@ class Upload(models.Model):
 
     def job_fixed(self):
         self.error = False
+        self.save()
+
+    def change_user(self, user):
+        self.user = user
         self.save()
