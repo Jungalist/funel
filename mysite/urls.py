@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'', include('d3.urls')),
     url('^', include('django.contrib.auth.urls')),
     url(r'^user/jobs/', show_jobs),
-    url(r'^user/$', profile),
+    url(r'^user/', show_jobs),
     url('^login/$', login, name='login'),
     url(r'^login/email/(?P<token>[0-9a-z-]+)$', email_login),
     

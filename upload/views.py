@@ -21,12 +21,10 @@ def upload_view(request):
             upload.author.id = user.id
             #upload.author = user
             #it gets set correctly here but as soon as it goes to the task, it shows id as 1 again?!
-            print 'form valid view 1: ' + str(upload.author.id)
             upload.save()
             path = change_name(upload)
-            print 'user submitted a job: ' + str(upload.author.id)
+            print 'user submitted a job: ' + str(upload.author)
             runscript.delay(upload.id, str(user.id), (str(upload.author.id) + '_' + str(upload.id)), path, upload.setting, upload.permutations, upload.biohel_runs, upload.attributes)
-            print 'form valid view 2: ' + str(upload.author.id)
             return render(request, 'upload/submitted.html', {'title': upload.title, 'link': 'job/' + str(upload.id)})
 
     else:
@@ -73,14 +71,6 @@ def progress(request, id):
 
     return render(request, 'upload/progress.html', {'progress': progress})
 
-def show_jobs(request):
-    jobs = Upload.objects.filter(author=request.user)
-    message = ''
-    if not jobs:
-        message = 'You have no jobs'
-    return render(request, 'upload/jobs.html', {'jobs': jobs, 'message': message})
-
 def result(request, id):
-
     #TODO dont hardcode getting the object and paths where possible
     return render(request, 'upload/result.html', {'id': id})

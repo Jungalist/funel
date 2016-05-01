@@ -112,6 +112,10 @@ USE_TZ = True
 AUTH_USER_MODEL = 'newuser.EmailUser'
 LOGIN_REDIRECT_URL = '/user/'
 
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = '25'
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/

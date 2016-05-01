@@ -50,7 +50,6 @@ def convert(inp, id):
             #end line
 
         for i in range(0, len(unique)):
-            print str(i)
             if i != len(unique)-1:
                 output.write('{"name":' + '"' + str(unique[i]) + '"},\n')
             else:

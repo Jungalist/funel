@@ -4,9 +4,12 @@
 
 {% block content %} 
 
-<h1 class="header">Upload</h1>        
+       
   <div class="row">
-    <div class="col-sm-8 col-sm-offset-2 panel panel-default">
+  <div class="col-sm-12 panel panel-default">
+  	<div class="col-sm-12 panel panel-heading"><h2>Upload</h2></div>
+    	<div class="col-sm-12 panel panel-body">
+    
     {{ error }}
     {{ form.errors }}
 	{% if form.non_field_errors or form.errors %}
@@ -23,35 +26,42 @@
         </div>
     {% endif %}
 	<form class="upload" method="post" action="../upload/" enctype="multipart/form-data">{% csrf_token %}
-		<label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
-        {{ form.email }}
-		<label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
-	        {{ form.title }}
-		<span style="margin:0 auto;"><label for="{{ form.file.id_for_label }}">{{ form.file.label }}</label>
-		{{ form.file }}</span>
+		<div class="row">
+			<div class="col-sm-2">
+				<span class="left-label" >{{ form.email.label }}</span><br /><br />		        	
+				<span class="left-label" >{{ form.title.label }}</span><br /><br />
+				<span class="left-label" >{{ form.file.label }}</span>
+			</div>
 
-		<div style="margin:10px auto;">
-			<label for="{{ form.setting.id_for_label }}">{{ form.setting.label }}</label>
-		        {{ form.setting }}
-		     <label for="{{ form.permutations.id_for_label }}">{{ form.permutations.label }}</label>
-		        {{ form.permutations }}
-		     <label for="{{ form.biohel_runs.id_for_label }}">{{ form.biohel_runs.label }}</label>
-		        {{ form.biohel_runs }}
-		     <label for="{{ form.attributes.id_for_label }}">{{ form.attributes.label }}</label>
-		        {{ form.attributes }}
+			<div class="col-sm-4 inputs">
+				{{ form.email }}<br/><br/>
+				{{ form.title }}<br/><br/>
+				{{ form.file }}
+			</div>
+		
 
+			<div class="col-sm-6 config">
+				<b id="params">Parameters <a href="{% url 'index' %}#how-to"><span class="glyphicon glyphicon-question-sign"></span></a></b><br /><br/>
+				<label for="{{ form.setting.id_for_label }}">{{ form.setting.label }}</label>
+			        {{ form.setting }}
+			     <label for="{{ form.permutations.id_for_label }}">{{ form.permutations.label }}</label>
+			        {{ form.permutations }}<br />
+			     <label for="{{ form.biohel_runs.id_for_label }}">{{ form.biohel_runs.label }}</label>
+			        {{ form.biohel_runs }}
+			     <label for="{{ form.attributes.id_for_label }}">Attributes Retained</label>
+			        {{ form.attributes }}
+		    </div>
 	    </div>
-
 		<!-- <a href="http://82.35.221.203/upload/job/775883c9-ddaa-4951-be69-2ea0e94bed8b/results/">
 			<div class="btn btn-primary" id="demo" >
 		 		Click here for demo
 		 	</div>
 		</a> -->
 		 
-		
-		<button type="submit">Submit</button>
+		<br /><br />
+		<button class="btn btn-primary" type="submit">Submit</button>
 	</form>
     </div>
     <div class="col-sm-2"></div>
-  </div>
+  </div></div>
 {% endblock %}

@@ -39,7 +39,7 @@ class Upload(models.Model):
         (200, '200'),
     )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, default=2)
     title = models.CharField(max_length=20, blank=True)
 #TODO - change status to be a text field and merge with error
     status = models.BooleanField(default=False)

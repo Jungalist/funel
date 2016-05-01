@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from django.core.signals import request_finished
 from .models import EmailUser
+from upload.models import Upload
 from django.shortcuts import redirect
 
 
@@ -25,10 +26,7 @@ def login(request):
     else:
         return render(request, 'registration/login.html', {})
 
-def profile(request):
-    user = request.user
-    html = "<html><body>Welcome %s.</body></html>" % user
-    return HttpResponse(html)
+
 #check if password is set first
 
 
@@ -40,4 +38,12 @@ def email_login(request, token):
     user = EmailUser.objects.get(token=token)
     user.backend = 'django.contrib.auth.backends.ModelBackend'
     auth_login(request, user)
-    return redirect('/user/show_jobs/')
+    return redirect('/user/jobs/')
+
+def show_jobs(request):
+    jobs = Upload.objects.filter(author=request.user)
+    print request.user
+    message = ''
+    if not jobs:
+        message = 'You have no jobs'
+    return render(request, 'registration/jobs.html', {'jobs': jobs, 'message': message})

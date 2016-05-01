@@ -2,8 +2,6 @@
   margin-top: 10px;
 }
 
-
-
 .title {
   text-align: center;
 }
@@ -13,3 +11,45 @@
 }
 
 
+#workflow {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border:1px solid #021a40;
+    margin-bottom: 10px;
+ }
+
+ #header {
+ 	background-color: #FFF;
+ }
+
+ .panel-body {
+ 	background-color:#EEE;
+ }
+ .panel-heading {
+ 	margin-bottom:0px;
+ }
+
+ body {
+ 	background-color:#FFF;
+ }
+
+ .left-label {
+ 	float:left;
+ 	margin-top:5px;
+ 	font-weight: bold;
+ }
+ .inputs input{
+ 	float:left;
+ 	margin-top:3px;
+ }
+
+ .config select {
+ 	width:100px;
+ }
+
+  .config label {
+ 	margin-right:5px;
+ 	width:100px;
+
+ }

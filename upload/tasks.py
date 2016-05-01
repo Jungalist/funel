@@ -33,7 +33,7 @@ def runscript(current_id, author_id, name, path, setting, permutations, biohel_r
     token = user.token
 #TODO chnage hardcoded url
     send_mail('Your Funel Network Has Been Generated', 
-    'Your Funel Network Has Been Generated. Please follow this link to see the results:\n http://127.0.0.1:8000/email_login/%s' % str(token), #+ reverse('email_login', kwargs={'token':token}), 
+    'Your Funel Network Has Been Generated. Please follow this link to see the results:\n http://127.0.0.1:8000/login/email/%s' % str(token), #+ reverse('email_login', kwargs={'token':token}), 
         's.smolorz@ncl.ac.uk', ['s.smolorz@ncl.ac.uk'], fail_silently=False)
     print str(current_id) + ' result saved: ' + u.result.path
 

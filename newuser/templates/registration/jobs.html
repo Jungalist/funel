@@ -1,0 +1,39 @@
+{% extends 'upload/base.html' %}
+{% block content %}
+
+<div class="col-sm-2">
+</div>
+
+<div class="col-sm-8">
+
+{{ user }} - Your jobs<br />
+
+{{ message }}
+
+{% for job in jobs %}
+{% jobs|dictsort:'job.start_date' %}
+<div>
+ID: {{ job.id }}
+Title: {{ job.title }}
+Status:
+{% if job.start_date != None %}
+  {% if job.status %}
+    <a href="/upload/job/{{ job.id }}/results">Finished - See Results</a>
+  {% elif job.error %}
+    An error has occured with this job <a href="{% url 'contact' %}"> contact admin</a>
+    In progress
+  {% endif %}
+</div>
+{% else %}
+Submitted, in the queue
+{% endif %}
+<br />
+{% endfor %}
+
+</div>
+
+<div class="col-sm-8">
+</div>
+
+
+{% endblock %}

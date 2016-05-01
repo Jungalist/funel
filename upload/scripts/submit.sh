@@ -18,8 +18,8 @@ hpc=b3037306@10.9.16.167
 #Copy data to linux machine then into the hpc
 
 #From home
-scp -i $rsa $2 $linux:data
-ssh -i $rsa $linux "scp /home/u13/b3037306/data/$name.arff $hpc:data/$name.arff"
+ scp -i $rsa $2 $linux:data
+ ssh -i $rsa $linux "scp /home/u13/b3037306/data/$name.arff $hpc:data/$name.arff"
 
 #From campus
 #scp -i $rsa $2 $hpc:data/$name.arff

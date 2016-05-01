@@ -17,7 +17,7 @@
 
     {% block header %}
 
-    <div class="row">
+    <div id="header" class="row">
       <div class="col-sm-2">
         <img src="{% static 'img/funel.png' %}" />
       </div>
@@ -44,11 +44,13 @@
         <div class="collapse navbar-collapse">
 	  <ul class="nav navbar-nav">
             <li><a href="/">Home</a></li>
-            <li><a href="/upload">Upload</a></li>
-            <li><a href="/">Test</a></li>
+            <li><a href="/upload">Run Funel</a></li>
+      {% if request.user.is_authenticated %}
+            <li><a href="/user/jobs">My Jobs</a></li>
+      {% endif %}
 	    {% if request.user.is_superuser %}
                 <li><a href="/admin"><b>ADMIN</b></a><li>
-            {% endif %}
+      {% endif %}
           </ul>
         </div>
       </div>        
