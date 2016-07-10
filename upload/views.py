@@ -10,6 +10,8 @@ from django.contrib.auth import logout
 from django.contrib import auth
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate
+from django.http import HttpResponse
+from django.views.static import serve
 #import pdb; pdb.set_trace() -debug
 
 def upload_view(request):  
@@ -30,12 +32,10 @@ def upload_view(request):
                 user = EmailUser.objects.get(email=email)
             print user.id
             upload = form.save()
+            upload.title = request.POST['title']
             upload.author.id = user.id#may be redundant
-            #upload.author = user
-            #it gets set correctly here but as soon as it goes to the task, it shows id as 1 again?!
             upload.save()
             path = change_name(upload)
-            print 'user submitted a job: ' + str(upload.author)
             runscript.delay(upload.id, str(user.id), (str(upload.author.id) + '_' + str(upload.id)), path, upload.setting, upload.permutations, upload.biohel_runs, upload.attributes)
             return render(request, 'upload/submitted.html', {'title': upload.title, 'link': 'job/' + str(upload.id)})
 
@@ -59,13 +59,11 @@ def index(request):
 #TODO file extension 
 #TODO split into files/classes
 def change_name(u):
-    print 'views.change_name top: ' + str(u.author.id)
     old = u.file.path
     new = settings.MEDIA_ROOT + '/' + 'experiments' + '/' + str(u.author.id) + '_' + str(u.id) + '.arff'
     os.rename(old, new)
     setattr(u, 'file', new)
     u.save()
-    print 'views.change_name bottom: ' + str(u.author.id)
     return new
 
 def progress(request, id):
@@ -85,4 +83,19 @@ def progress(request, id):
 
 def result(request, id):
     #TODO dont hardcode getting the object and paths where possible
-    return render(request, 'upload/result.html', {'id': id})
+    u = Upload.objects.get(id=id)
+
+    if (request.user != u.author):
+         return render(request, 'upload/log.html')
+    else:
+        return render(request, 'upload/result.html', {'id': id})
+
+
+def download(request, id):
+    u = Upload.objects.get(id=id)
+    print u.result
+    response = HttpResponse(u.result, content_type='application/text/plain')
+    response['Content-Disposition'] = 'attachment; filename="results.txt"'
+    return response
+
+

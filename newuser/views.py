@@ -29,9 +29,6 @@ def login(request):
 
 #check if password is set first
 
-
-
-#from django.contrib.auth import login
 #if logged in, log out or check cookie and login if same user maybe prompt with last seen date
 #your job is ready - resend link but if the user has visited before they stay logged in - set timeout to 100years
 def email_login(request, token):
@@ -48,4 +45,4 @@ def show_jobs(request):
     return render(request, 'registration/jobs.html', {'jobs': ordered_jobs, 'message': message})
 
 def contact(request):
-    pass
+    return render(request, 'registration/contact.html')

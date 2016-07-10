@@ -4,8 +4,9 @@
 
 	{% if request.user.is_authenticated %}
 		<p>{{ progress }}</p> 
+		<p>See all of your pending and complete <a href="/user/jobs/">jobs.</a></p>
 	{% else %}
-		<p>Please log in</p>
+		<p>We seemed to have lost your cookie! Did you log in from a different machine? Please check your emails and find the authenticating URL</p>
 	{% endif %}
 
 {% endblock %}

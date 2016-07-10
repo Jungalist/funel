@@ -9,23 +9,23 @@ from d3.models import Graph
 
 class Upload(models.Model):
     SETTING = (
-        (1, '1'),
-        (2, '2'),
-        (3, '3'),
-        (4, '4'),
+        (1, 'C1 - reduced dataset + 1 machine learning phase'),
+        (2, 'C2 - original dataset + 1 machine learning phase'),
+        (3, 'C3 - reduced dataset + 2 machine learning phases'),
+        (4, 'C4 - original dataset + 2 machine learning phases'),
     )
 
     PERMUTATIONS = (
-        (1, '1'),
-        (15, '15'),
+        (3, '3'),
+        (5, '5'),
         (50, '50'),
         (100, '100'),
         (200, '200'),
     )
 
     BIOHEL = (
-        (2, '2'),
-        (15, '15'),
+        (3, '3'),
+        (10, '10'),
         (250, '250'),
         (500, '500'),
         (1000, '1000'),
@@ -68,14 +68,15 @@ class Upload(models.Model):
     #TODO change id permamently
     def job_done(self):
         self.finish_date = timezone.now()
-        print self
-        print str(self.author.id)
-        json_file = convert(self.result.path, str(self.author.id) + str(self.id))
+        json_file = convert(self.result.path, str(self.author.id) + '_' + str(self.id))
+        print 'b4:' +  str(json_file)
         g = Graph.objects.create(assoc_job_id=self.id, json_data=json_file)
+        print 'afta: ' + str(g.json_data)
         g.calculate_positions(str(self.author.id), self.result)
         self.status = True
         self.save()
         g.save()
+        print 'afta: ' + str(g.json_data)
 
     def __str__(self):
         return str(self.id)

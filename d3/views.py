@@ -9,6 +9,7 @@ import simplejson as json
 def graph(request, id):
 	#TODO generate graph object in models
     g = Graph.objects.get(assoc_job_id=id)
+    print str(g.json_data)
     data = json.load(g.json_data)
     pos = json.load(g.positions)
 

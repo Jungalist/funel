@@ -1,5 +1,4 @@
 {% extends 'upload/base.html' %}
-{% load widget_tweaks %}
 
 
 {% block content %} 
@@ -44,9 +43,9 @@
 				<b id="params">Parameters <a href="{% url 'index' %}#how-to"><span class="glyphicon glyphicon-question-sign"></span></a></b><br /><br/>
 				<label for="{{ form.setting.id_for_label }}">{{ form.setting.label }}</label>
 			        {{ form.setting }}
-			     <label for="{{ form.permutations.id_for_label }}">{{ form.permutations.label }}</label>
+			     <label for="{{ form.permutations.id_for_label }}">Permutations</label>
 			        {{ form.permutations }}<br />
-			     <label for="{{ form.biohel_runs.id_for_label }}">{{ form.biohel_runs.label }}</label>
+			     <label for="{{ form.biohel_runs.id_for_label }}">Machine learning runs</label>
 			        {{ form.biohel_runs }}
 			     <label for="{{ form.attributes.id_for_label }}">Attributes Retained</label>
 			        {{ form.attributes }}

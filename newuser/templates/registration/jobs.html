@@ -5,25 +5,53 @@
 	<div id="jobs" class="col-sm-12">
 	{{ user }} - Your jobs 
 	{{ message }}
-		{% for job in jobs %}
-		<div class="row">
-			ID: {{ job.id }}
-			Job name: {{ job.title }}
-			Status:
-			{% if job.start_date != None %}
-			  {% if job.status %}
-			    <a href="/upload/job/{{ job.id }}/results">Finished - See Results</a>
-			  {% elif job.error %}
-			    An error has occured with this job <a href="{% url 'contact' %}"> contact admin</a>
-			  {% else %}
-			    In progress
-			  {% endif %}
+	<br /><br />
+	<table style="width:100%">
+		<tr>
+			<th>Job ID</th>
+			<th>Job name</th>
+			<th>Submitted</th>
+			<th>Started</th>
+			<th>Finished</th>
+			<th>Status</th>
+		</tr>
+			{% for job in jobs %}
+			 <tr>
+				<td>
+					{{ job.id }}
+				</td>
+				<td>
+					{{ job.title }}
+				</td>
+				<td>
+					{{ job.submit_date }}
+				</td>
+				<td>
+					{{ job.start_date }}
+				</td>
+				<td>
+					{{ job.finish_date }}
+				</td>
+				<td>
+				
+				{% if job.start_date != None %}
+				  {% if job.status %}
+				    <a href="/upload/job/{{ job.id }}/results">Finished - See Results</a>
+				  {% elif job.error %}
+				    An error has occured with this job <a href="{% url 'contact' %}"> contact admin</a>
+				  {% else %}
+				    In progress
+				  {% endif %}
+				
+				{% else %}
+				Submitted, in the queue
+				{% endif %}
+				</td>
+			</tr>
+				{% endfor %}
 			
-			{% else %}
-			Submitted, in the queue
-			{% endif %}
-			{% endfor %}
-		</div>
+
+	</table>
 	</div>
 </div>
 

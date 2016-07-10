@@ -153,12 +153,12 @@
             $(document).ready(function(){
                 //Load in the json file
                 var data = {{ json | safe }};
+                
                 var width = window.innerWidth;
                 var height = window.innerHeight-50;
                 var r = 8;
                 var positions = {{ positions | safe }};
 
-                //var color = ['#eff3ff', '#bdd7e7', '#6baed6','#3182bd','#08519c']
                 var color = ["#ffffff","#e2e6f4", "#c6cde9", "#aab4de", "#8d9bd3", "#7182c9", "#5569be", "#3850b3", "#1c37a8", "#001f9e", "#01186B"];
 
 
@@ -172,24 +172,37 @@
                 var centralityScale = d3.scale.ordinal().domain([0,6]).range(color);// TODO dynamic range that makes sense
                 var betweenessScale = d3.scale.ordinal().domain(betweenessExtent).range(color);
 
-                var posX = d3.scale.linear()
+
+                var size = data.nodes.length;
+                var posX;
+                var posY;
+
+                if (size < 40){
+                     posX = d3.scale.linear()
                     .range([100,width-100])
                     .domain([positions.scales[1].minX,positions.scales[0].maxX]);//TODO less hardcoded, in one entry rather than 4
 
-                var posY = d3.scale.linear()
+                posY = d3.scale.linear()
                     .range([0,height])
                     .domain([positions.scales[3].minY,positions.scales[2].maxY]);
+                } else {
+                    posX = d3.scale.linear()
+                    .range([-width,width*2])
+                    .domain([positions.scales[1].minX,positions.scales[0].maxX]);//TODO less hardcoded, in one entry rather than 4
 
-                for (var i = 0; i < data.nodes.length; i++){
+                posY = d3.scale.linear()
+                    .range([-height,height*2])
+                    .domain([positions.scales[3].minY,positions.scales[2].maxY]);
+                }
+
+               
+
+                for (var i = 0; i < data.nodes.length-1; i++){
                     data.nodes[i].x = posX(positions.positions[i].x);
                     data.nodes[i].y = posY(positions.positions[i].y);
                     data.nodes[i].betweeness = positions.positions[i].betweeness;
                     data.nodes[i].eigenvector_centrality = positions.positions[i].eigenvector_centrality;
                     data.nodes[i].fixed = true;
-                    if(data.nodes[i].name == "U19495_s_at"){
-                        console.log(data.nodes[i].eigenvector_centrality);
-                        console.log(centralityScale(data.nodes[i].eigenvector_centrality));
-                    }
                 }
 
 

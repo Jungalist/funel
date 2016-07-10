@@ -57,3 +57,10 @@
  #jobs .row {
  	margin-left:0px;
  }
+
+tr:nth-child(even) {background: #CCC}
+tr:nth-child(odd) {background: #FFF}
+
+th {
+	background: #E5E5E5;
+}

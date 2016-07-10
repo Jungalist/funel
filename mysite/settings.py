@@ -31,7 +31,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'upload',
-    'widget_tweaks',
     'kombu.transport.django',
     'd3',
     'newuser',
@@ -85,12 +84,12 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 
 DATABASES = {
-   'default': {
+    'default': {
        'ENGINE': 'django.db.backends.mysql', 
        'NAME': 'funel',
        'USER': 'seb',
        'PASSWORD': 'password',
-       'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+       'HOST': 'localhost',   
        'PORT': '',
    }
 }
@@ -112,9 +111,11 @@ USE_TZ = True
 AUTH_USER_MODEL = 'newuser.EmailUser'
 LOGIN_REDIRECT_URL = '/user/'
 
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = '25'
-
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_HOST_USER = 'postmaster@sandboxa105c6eb950c4a3db3fd30f9444dfa50.mailgun.org'
+EMAIL_HOST_PASSWORD = '671bfebc0a1bdd3a1d425655fa011a26'
+EMAIL_PORT = '587'
+EMAIL_USE_TLS= True
 
 
 # Static files (CSS, JavaScript, Images)

@@ -28,11 +28,12 @@
 
       {% if request.user.is_authenticated %}
         <div class="col-sm-2 login">
-          <a href="/logout"><button type="button" class="btn btn-primary">Log out <span class="glyphicon glyphicon-log-out"></span></button></a>
+          <a href="{% url 'logout' %}?next=/"><button type="button" class="btn btn-primary">Log out <span class="glyphicon glyphicon-log-out"></span></button></a>
         </div>
       {% else %}
         <div class="col-sm-2 login">
-          <a href="/login"><button type="button" class="btn btn-primary">Login <span class="glyphicon glyphicon-log-in"></span></button></a>
+          <a href="funel/login"><button type="button" class="btn btn-primary">Login <span class="glyphicon 
+glyphicon-log-in"></span></button></a>
         </div>
       {% endif %}
     </div>
@@ -44,12 +45,13 @@
         <div class="collapse navbar-collapse">
 	  <ul class="nav navbar-nav">
             <li><a href="/">Home</a></li>
-            <li><a href="/upload">Run Funel</a></li>
+            <li><a href="{% url 'upload_view' %}">Run Funel</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
       {% if request.user.is_authenticated %}
-            <li><a href="/user/jobs">My Jobs</a></li>
+            <li><a href="{% url 'jobs' %}">My Jobs</a></li>
       {% endif %}
 	    {% if request.user.is_superuser %}
-                <li><a href="/admin"><b>ADMIN</b></a><li>
+                <li><a href="funel/admin"><b>ADMIN</b></a><li>
       {% endif %}
           </ul>
         </div>
