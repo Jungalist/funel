@@ -26,29 +26,47 @@
     {% endif %}
 	<form class="upload" method="post" action="../upload/" enctype="multipart/form-data">{% csrf_token %}
 		<div class="row">
-			<div class="col-sm-2">
-				<span class="left-label" >{{ form.email.label }}</span><br /><br />		        	
-				<span class="left-label" >{{ form.title.label }}</span><br /><br />
-				<span class="left-label" >{{ form.file.label }}</span>
-			</div>
+			<div class="middle">
+				<div class="col-sm-2">
+					<span class="left-label" >{{ form.email.label }}</span><br /><br />		        	
+					<span class="left-label" >{{ form.title.label }}</span><br /><br />
+					<span class="left-label" >{{ form.file.label }}</span>
+				</div>
 
-			<div class="col-sm-4 inputs">
-				{{ form.email }}<br/><br/>
-				{{ form.title }}<br/><br/>
-				{{ form.file }}
+				<div class="col-sm-4 inputs">
+					{{ form.email }}<br/><br/>
+					{{ form.title }}<br/><br/>
+					{{ form.file }}
+				</div>
 			</div>
-		
 
 			<div class="col-sm-6 config">
-				<b id="params">Parameters <a href="{% url 'index' %}#how-to"><span class="glyphicon glyphicon-question-sign"></span></a></b><br /><br/>
-				<label for="{{ form.setting.id_for_label }}">{{ form.setting.label }}</label>
-			        {{ form.setting }}
-			     <label for="{{ form.permutations.id_for_label }}">Permutations</label>
-			        {{ form.permutations }}<br />
-			     <label for="{{ form.biohel_runs.id_for_label }}">Machine learning runs</label>
-			        {{ form.biohel_runs }}
-			     <label for="{{ form.attributes.id_for_label }}">Attributes Retained</label>
-			        {{ form.attributes }}
+				<table class="params">
+					<caption>
+						<b id="params">Parameters <a href="{% url 'index' %}#how-to"><span class="glyphicon glyphicon-question-sign"></span></a></b>
+					</caption>
+					<tr>
+						<th><label for="{{ form.setting.id_for_label }}">Setting</label></th>
+						<td>{{ form.setting }}</td>
+						<th><label for="{{ form.permutations.id_for_label }}">Permutations</label></th>
+						<td>{{ form.permutations }}</td>
+					</tr>
+					<tr>
+						<th><label for="{{ form.biohel_runs.id_for_label }}">Machine learning runs</label></th>
+						<td>{{ form.biohel_runs }}</td>
+						<th><label for="{{ form.attributes.id_for_label }}">Attributes Retained</label></th>
+						<td>{{ form.attributes }}</td>
+					</tr>
+				</table>
+				
+				
+			        
+			     
+			        <br />
+			     
+			        
+			     
+			        
 		    </div>
 	    </div>
 		<!-- <a href="http://82.35.221.203/upload/job/775883c9-ddaa-4951-be69-2ea0e94bed8b/results/">

@@ -8,6 +8,8 @@ from d3.scripts.convert import *
 from d3.models import Graph
 
 class Upload(models.Model):
+    
+    #All available options of settings for Funel
     SETTING = (
         (1, 'C1 - reduced dataset + 1 machine learning phase'),
         (2, 'C2 - original dataset + 1 machine learning phase'),
@@ -65,7 +67,6 @@ class Upload(models.Model):
         return self.status
 
     #Once the job is finished, generate the JSON file and create a corresponding Graph object
-    #TODO change id permamently
     def job_done(self):
         self.finish_date = timezone.now()
         json_file = convert(self.result.path, str(self.author.id) + '_' + str(self.id))
@@ -85,7 +86,6 @@ class Upload(models.Model):
         self.result = r
         self.save()
 
-#TODO use this
     def job_error(self):
         self.status = False
         self.error = True

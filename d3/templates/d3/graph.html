@@ -8,118 +8,9 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "css/graph.css" %}">
     </head> 
-    <style>
-/*TODO download all libraries
-  */
-    .node {
-        stroke: #000;
-        stroke-width: 2 px;
-    }
-
-    .hi-node {
-        fill: #FFF;
-        stroke: black;
-        stroke-width: 4 px;
-    }
-
-    .link {
-        stroke: #bbbbbb;
-        stroke-width: 2px;
-    }
-
-    .hi-link {
-        stroke:red;
-        stroke-width: 4px;
-    }
-
-    .controls {
-        height:44px;
-        width:auto;
-        background-color:#333;
-    }
-
-    .controls button {
-        background-color: #333;
-        color: white;
-        padding: 10px;
-        margin: 0;
-        font-size: 16px;
-        border: none;
-        cursor: pointer;
-    }
-    .controls button:hover {
-        background-color: #333;
-        color: #ccc;
-    }
-
-    .dropdown-btn {
-        background-color: #4CAF50;
-        color: white;
-        padding: 16px;
-        font-size: 16px;
-        border: none;
-        cursor: pointer;
-    }
-
-    .dropdown-container {
-        position: relative;
-        display: inline-block;
-    }
-
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #f9f9f9;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    }
-
-    .dropdown-content button {
-        color: #fff;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        min-width: 133px;
-    }
-
-    .dropdown-content button:hover {
-        background-color: #ccc;
-        color:#000;
-    }
-
-    .dropdown-container:hover .dropdown-content {
-        display: block;
-    }
-
-    .dropdown-container:hover .dropdown-btn {
-        background-color: #ccc;
-        color: black;
-    }
-
-    #search {
-        margin-top:10px;
-        margin-right:5px;
-        float:right;
-    }
-
-    #searchbtn {
-        float:right;
-    }
-
-    #searchbtn:hover {
-        color:#ccc;
-    }
-
-    #logo {
-        bottom: 15px;
-        right: 15px;
-        position:fixed;
-        height:75px;
-        width:75px;
-    }
-
-    </style>
-    
+<!-- TODO download all libraries -->
     <body>
         <div class="controls">
             <button type="button" id="start-force">Start force</button>
@@ -154,16 +45,17 @@
                 //Load in the json file
                 var data = {{ json | safe }};
                 
+                //Size of window and radius of nodes
                 var width = window.innerWidth;
                 var height = window.innerHeight-50;
                 var r = 8;
                 var positions = {{ positions | safe }};
 
+
+                //Scales - colours of nodes and scaling of results to those colours
                 var color = ["#ffffff","#e2e6f4", "#c6cde9", "#aab4de", "#8d9bd3", "#7182c9", "#5569be", "#3850b3", "#1c37a8", "#001f9e", "#01186B"];
-
-
                 var centralityExtent = d3.extent(positions, function(d){
-                    return d.eigenvector_centrality; //-----------------TODO - its centrality not betweeness/RANDOM COLORS??
+                    return d.eigenvector_centrality; //-----------------TODO - its centrality not betweeness, check correctness
                 });
                 var betweenessExtent = d3.extent(positions, function(d){
                     return d.betweeness; 
@@ -255,6 +147,7 @@
                 })
                   .on("dblclick", dblclick)
                   .call(drag)
+                  //Highlighting neightbour nodes on hover
                   .on("mouseover", function (d) {
                         link.classed("hi-link", function(s){
                             if (d == s.source || d == s.target){
@@ -270,14 +163,13 @@
                     });
 
 
-
+                  //Add labels
                    node.append("title")
                     .text(function(d) {
                         return d.name;
                     });
 
 //------------------------------------------------------------------------------------------------------
-
 
                 function tick() {
                   link.attr("x1", function(d) { return d.source.x; })
@@ -289,6 +181,7 @@
                       .attr("cy", function(d) { return d.y; });
                 }
 
+                //Double click event - release frozen node
                 function dblclick(d) {
                     d3.select(this).classed("fixed", d.fixed = false);
                 }
@@ -298,6 +191,7 @@
                     d3.select(this).classed("fixed", d.fixed = true);
                 }
 
+                //Zoom
                 function zoomed() {
                     svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
                 }
@@ -319,6 +213,8 @@
 
                 var activeColor = "betweeness";
 
+
+                //Search functionality
                 $("#searchbtn").click(function() {
                     node
                         .classed("hi-node", false)
@@ -358,6 +254,8 @@
                     activeColor = "betweeness";
                 });
 
+                //Help functions
+
                 $("#interaction-help").click(function() {
                     alert("Nodes are initially static, they can be moved around the graph by dragging and will be fixed in the position they were released. Double clicking the node will allow it to move freely. You can also change the parameters of node colours under 'Display Options'.");
                 });
@@ -375,7 +273,4 @@
                 
         });
     </script>
-
-        
     </body> </html>
-            

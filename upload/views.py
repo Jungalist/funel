@@ -18,11 +18,12 @@ def upload_view(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         #TODO check all fields that need to be saved are
-    #add an in.progress var
-    #use PK ids to refer to uplaods
+        #add an in.progress var
+        #use PK ids to refer to uplaods
         if form.is_valid():
             email = request.POST['email']
             user = EmailUser.objects.filter(email=email)
+            #Check if user already exists, if not - create new user and log in
             if not user:
                 logout(request)
                 user = EmailUser.objects.create(email=email)
@@ -31,11 +32,13 @@ def upload_view(request):
             else: 
                 user = EmailUser.objects.get(email=email)
             print user.id
+            #Save form as Upload object
             upload = form.save()
             upload.title = request.POST['title']
             upload.author.id = user.id#may be redundant
             upload.save()
             path = change_name(upload)
+            #Start task
             runscript.delay(upload.id, str(user.id), (str(upload.author.id) + '_' + str(upload.id)), path, upload.setting, upload.permutations, upload.biohel_runs, upload.attributes)
             return render(request, 'upload/submitted.html', {'title': upload.title, 'link': 'job/' + str(upload.id)})
 
@@ -58,6 +61,8 @@ def index(request):
 
 #TODO file extension 
 #TODO split into files/classes
+
+#Changes input file name and saves in media/experiments/authorid_UUID.arff
 def change_name(u):
     old = u.file.path
     new = settings.MEDIA_ROOT + '/' + 'experiments' + '/' + str(u.author.id) + '_' + str(u.id) + '.arff'
@@ -66,6 +71,7 @@ def change_name(u):
     u.save()
     return new
 
+#Job status view
 def progress(request, id):
     #TODO only show users their own jobs/do all the view handling logic here not in html
     #TODO check if job isnt already finished
@@ -90,7 +96,7 @@ def result(request, id):
     else:
         return render(request, 'upload/result.html', {'id': id})
 
-
+#Serve plain text results
 def download(request, id):
     u = Upload.objects.get(id=id)
     print u.result

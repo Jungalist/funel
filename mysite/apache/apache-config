@@ -1,0 +1,35 @@
+Define IP=82.35.221.203
+WSGIPythonPath  /home/seb/.virtualenvs/funel/bin/python:/home/seb/.virtualenvs/funel/lib/python2.7/site-packages
+
+<VirtualHost *:80>
+	
+	ServerAdmin root@localhost
+	ServerName {IP}
+	ServerAlias http://{IP}/
+	ServerName {IP}
+	ServerAdmin s.smolorz@ncl.ac.uk
+
+	DocumentRoot /home/seb/project/funel
+
+	Alias /static /home/seb/project/funel/upload/static
+	Alias /images /home/seb/project/funel/upload/static/img
+
+	LoadModule wsgi_module /usr/lib/apache2/modules/mod_wsgi.so
+	
+	WSGIScriptAlias / /home/seb/project/funel/mysite/apache/wsgi.py
+    		<Directory />
+				AuthType Basic
+				AuthName "This is a test server, please log in"
+				AuthBasicProvider file
+				AuthUserFile "/home/seb/project/passwords"
+				Require all granted
+    		</Directory>
+
+	
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+
